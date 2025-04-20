@@ -8,6 +8,7 @@
       userEmail = "semyon.protas@gmail.com";
       extraConfig = {
         init.defaultBranch = "main";
+        core.autocrlf = true;
       };
     }; 
 
