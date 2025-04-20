@@ -23,14 +23,30 @@
     };
 
     nix-gc-env.url = "github:Julow/nix-gc-env";
+
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
+  outputs = { self, nixpkgs, nvf, ... }@inputs: {
+    packages.x86_64-linux.neovim = 
+      (nvf.lib.neovimConfiguration 
+      {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./nvf_module.nix
+        ];
+      })
+      .neovim;
+
     nixosConfigurations.saymoon = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       specialArgs = {
         inherit inputs;
         inherit system;
+        inherit self;
       };
       modules = [
         ./hosts/lenovo-ideapad/configuration.nix

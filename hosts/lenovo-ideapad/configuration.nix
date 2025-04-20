@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, system, ... }:
+{ config, lib, pkgs, inputs, system, self, ... }:
 let 
   hm = import ../../modules/home-manager;
   nix-conf = import ../../modules/nixos;
@@ -95,7 +95,11 @@ in
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; inherit system; };
+    extraSpecialArgs = { 
+      inherit inputs; 
+      inherit system; 
+      inherit self; 
+    };
     useGlobalPkgs = true;
     users = {
       "smn" = import ./home.nix;

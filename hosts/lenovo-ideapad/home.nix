@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, system, ... }:
+{ config, pkgs, inputs, system, self, ... }:
 
 {
   home.username = "smn";
@@ -24,6 +24,7 @@
     inputs.logseq.packages."${system}".default
     inputs.dracula-cursors.packages."${system}".default
     inputs.zen-browser.packages."${system}".default
+    self.packages.${pkgs.stdenv.system}.neovim
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
