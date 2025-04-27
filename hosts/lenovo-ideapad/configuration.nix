@@ -115,6 +115,7 @@ in
     mesa 
     vulkan-tools
     brightnessctl
+    pulseaudioFull
   ];
 
   fonts.packages = [ pkgs.nerdfonts ];
