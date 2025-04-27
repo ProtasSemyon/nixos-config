@@ -60,7 +60,14 @@ in
   };
 
 
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    settings = {
+      General = {
+        Experimental = true;
+      };
+    };
+  };
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
@@ -116,6 +123,8 @@ in
     vulkan-tools
     brightnessctl
     pulseaudioFull
+
+    blueman # optional, GUI Bluetooth manager
   ];
 
   fonts.packages = [ pkgs.nerdfonts ];
