@@ -25,6 +25,9 @@
   ];
 
   hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
+
+  services.xserver.videoDrivers = [ "amdgpu" ];
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
