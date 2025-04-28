@@ -36,7 +36,7 @@
       {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
-          ./nvf_module.nix
+          ./nvf
         ];
       })
       .neovim;
