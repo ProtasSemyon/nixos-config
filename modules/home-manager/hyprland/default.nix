@@ -1,11 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 {
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    xwayland.enable = true;
-  };
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
 
+  programs.hyprland.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   environment.systemPackages = [
@@ -18,7 +16,7 @@
 
     pkgs.hyprpaper
     pkgs.hyprsunset
-    pkgs.rofi-wayland #change to pkgs.rofi-wayland later
+    pkgs.rofi-wayland
     pkgs.wl-clipboard-rs
 
     pkgs.hyprshot
@@ -30,5 +28,15 @@
   services.xserver.videoDrivers = [ "amdgpu" ];
 
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
+  home-manager.users.smn = {
+    services.hyprpolkitagent.enable = true;
+    xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    # wayland.windowManager.hyprland = {
+    #   enable = true;
+
+    #   package = null;
+    #   portalPackage = null;
+    # };
+  };
 }

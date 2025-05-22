@@ -1,34 +1,26 @@
-{pkgs, ...}: 
+{pkgs, nvim-config, ...}: 
 {
-  # vim = {
-  #   theme = {
-  #     enable = true;
-  #     name = "dracula";
-  #     style = "dark";
-  #   };
-
-  #   statusline.lualine.enable = true;
-  #   telescope.enable = true;
-  #   autocomplete.nvim-cmp.enable = true;
-
-  #   languages = {
-  #     enableLSP = true;
-  #     enableTreesitter = true;
-
-  #     nix.enable = true;
-  #     ts.enable = true;
-  #     rust.enable = true;
-  #   };
-
-  # };
-
   vim = {
-    additionalRuntimePaths = [
-      ./nvim
-    ];
+    theme = {
+      enable = true;
+      name = "dracula";
+      style = "dark";
+    };
 
-    luaConfigRC.GenesisNvim = /* lua */ ''
-      require("GenesisNvim")
-    '';
+    statusline.lualine.enable = true;
+    telescope.enable = true;
+    autocomplete.nvim-cmp.enable = true;
+
+    languages = {
+      enableLSP = true;
+      enableTreesitter = true;
+
+      nix.enable = true;
+      ts.enable = true;
+      rust.enable = true;
+    };
+
+    lsp.lspconfig.enable = true;
+    filetree.nvimTree.enable = true;
   };
 }

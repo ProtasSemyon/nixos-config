@@ -28,21 +28,29 @@
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
   };
 
-  outputs = { self, nixpkgs, nvf, ... }@inputs: {
-    packages.x86_64-linux.neovim = 
+  outputs = { self, nixpkgs, nvf, ... }@inputs: let 
+    system = "x86_64-linux"; 
+  in {
+    packages.${system}.neovim = 
       (nvf.lib.neovimConfiguration 
       {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        pkgs = nixpkgs.legacyPackages.${system};
         modules = [
+          ({ config, lib, pkgs, ... }: {
+            _module.args = {
+              nvim-config = inputs.nvim-config;
+            };
+          })
           ./nvf
         ];
       })
       .neovim;
 
-    nixosConfigurations.saymoon = nixpkgs.lib.nixosSystem rec {
-      system = "x86_64-linux";
+    nixosConfigurations.saymoon = nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit inputs;
         inherit system;
@@ -53,6 +61,7 @@
         inputs.home-manager.nixosModules.default
         inputs.nixos-hardware.nixosModules.lenovo-ideapad-slim-5
         inputs.nix-gc-env.nixosModules.default
+        inputs.distro-grub-themes.nixosModules.${system}.default
       ];
     };
   };

@@ -16,6 +16,11 @@ in
       hm.git
       hm.vscode
     ];
+
+  distro-grub-themes = {
+    enable = true;
+    theme = "nixos";
+  };
     
   networking.hostName = "saymoon"; 
 
@@ -98,7 +103,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.smn = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "network" "kvm" "adbusers" ];
+    extraGroups = [ "wheel" "systemd-network" "network" "kvm" "adbusers" ];
   };
 
   home-manager = {
@@ -124,7 +129,10 @@ in
     brightnessctl
     pulseaudioFull
 
-    blueman # optional, GUI Bluetooth manager
+    blueman
+
+    #Nix stuff
+    nix-prefetch-github
   ];
 
   fonts.packages = [ pkgs.nerdfonts ];
