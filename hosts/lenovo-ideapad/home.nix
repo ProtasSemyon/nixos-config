@@ -4,21 +4,16 @@
   home.username = "smn";
   home.homeDirectory = "/home/smn";
 
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
   home.enableNixpkgsReleaseCheck = false;
-
-  services.mako = {
-    enable = true;
-    defaultTimeout = 2000;
-    maxVisible = 3;
-  };
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
     android-studio
     libreoffice
-    nerdfetch
+    neofetch
+    neohtop
     telegram-desktop
     webcord
     inputs.logseq.packages."${system}".default

@@ -103,7 +103,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.smn = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "systemd-network" "network" "kvm" "adbusers" ];
+    extraGroups = [ "wheel" "networkmanager" "kvm" "adbusers" ];
   };
 
   home-manager = {
@@ -113,6 +113,7 @@ in
       inherit self; 
     };
     useGlobalPkgs = true;
+    backupFileExtension = "backup";
     users = {
       "smn" = import ./home.nix;
     };
@@ -126,22 +127,25 @@ in
     direnv    
     mesa 
     vulkan-tools
-    brightnessctl
     pulseaudioFull
 
-    blueman
+    obsidian
 
     #Nix stuff
     nix-prefetch-github
+
+    #Theme
+    sddm-astronaut
+    catppuccin-sddm
   ];
 
-  fonts.packages = [ pkgs.nerdfonts ];
+  fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   fonts.fontconfig.useEmbeddedBitmaps = true;
   # List services that you want to enable:
 
   services.openssh.enable = true;
   services.tailscale.enable = true;
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
 
