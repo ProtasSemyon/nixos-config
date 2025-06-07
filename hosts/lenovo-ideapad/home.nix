@@ -16,7 +16,8 @@
     neohtop
     telegram-desktop
     webcord
-    inputs.logseq.packages."${system}".default
+    logseq
+    
     inputs.dracula-cursors.packages."${system}".default
     inputs.zen-browser.packages."${system}".default
     self.packages.${pkgs.stdenv.system}.neovim
@@ -29,6 +30,19 @@
     (yandex-music.override {
       trayEnabled = true;
       electronArguments = "";
+    })
+
+    (pkgs.symlinkJoin {
+      name = "vlc";
+      paths = [ pkgs.vlc ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/vlc \
+          --unset DISPLAY
+        mv $out/share/applications/vlc.desktop{,.orig}
+        substitute $out/share/applications/vlc.desktop{.orig,} \
+          --replace-fail Exec=${pkgs.vlc}/bin/vlc Exec=$out/bin/vlc
+      '';
     })
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your

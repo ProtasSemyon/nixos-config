@@ -146,6 +146,11 @@ in
   services.openssh.enable = true;
   services.tailscale.enable = true;
 
+  services.deluge = {
+    enable = true;
+    web.enable = true;
+  };
+
   system.stateVersion = "25.05";
 }
 

@@ -14,8 +14,6 @@
 
     zen-browser.url = "github:ProtasSemyon/zen-browser-flake";
 
-    logseq.url = "github:ProtasSemyon/logseq-nix-flake";
-
     dracula-cursors.url = "github:ProtasSemyon/dracula-cursors-nixos";
 
     nvchad4nix = {
