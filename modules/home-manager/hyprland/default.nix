@@ -87,6 +87,7 @@
         wallpaper = [
           #"eDP-1,${config.home.homeDirectory or "~"}/Pictures/Wallpapers/wallpapers.png"
           "eDP-1,$HOME/Pictures/Wallpapers/ForestGirl.png"
+          "HDMI-A-1, $HOME/Pictures/Wallpapers/ForestGirl.png"
         ];
       };
     };
@@ -214,6 +215,9 @@
 
           "$mainMod, S, togglespecialworkspace, magic"
           "$mainMod SHIFT, S, movetoworkspace, special:magic"
+
+          "$mainMod, A, togglespecialworkspace, cookies"
+          "$mainMod SHIFT, A, movetoworkspace, special:cookies"
 
           "$mainMod, mouse_down, workspace, e+1"
           "$mainMod, mouse_up, workspace, e-1"

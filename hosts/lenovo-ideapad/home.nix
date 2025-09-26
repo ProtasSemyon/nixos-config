@@ -17,6 +17,18 @@
     telegram-desktop
     webcord
     logseq
+    vlc
+
+    #Gaming
+    (lutris.override {
+      extraLibraries =  pkgs: [
+        # List library dependencies here
+      ];
+    })
+
+    appimage-run
+    prismlauncher
+    xclicker
     
     inputs.dracula-cursors.packages."${system}".default
     inputs.zen-browser.packages."${system}".default
@@ -32,18 +44,18 @@
       electronArguments = "";
     })
 
-    (pkgs.symlinkJoin {
-      name = "vlc";
-      paths = [ pkgs.vlc ];
-      buildInputs = [ pkgs.makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/vlc \
-          --unset DISPLAY
-        mv $out/share/applications/vlc.desktop{,.orig}
-        substitute $out/share/applications/vlc.desktop{.orig,} \
-          --replace-fail Exec=${pkgs.vlc}/bin/vlc Exec=$out/bin/vlc
-      '';
-    })
+    # (pkgs.symlinkJoin {
+    #   name = "vlc";
+    #   paths = [ pkgs.vlc ];
+    #   buildInputs = [ pkgs.makeWrapper ];
+    #   postBuild = ''
+    #     wrapProgram $out/bin/vlc \
+    #       --unset DISPLAY
+    #     mv $out/share/applications/vlc.desktop{,.orig}
+    #     substitute $out/share/applications/vlc.desktop{.orig,} \
+    #       --replace-fail Exec=${pkgs.vlc}/bin/vlc Exec=$out/bin/vlc
+    #   '';
+    # })
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
     # # environment:

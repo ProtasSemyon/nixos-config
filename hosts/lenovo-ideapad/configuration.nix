@@ -137,8 +137,26 @@ in
     #Theme
     sddm-astronaut
     catppuccin-sddm
+
+    #Programming
+    rustup
+
+    #C++
+    gcc
+    clang
+    clang-tools
+    lldb
+    gdb
+    cmake
+    ninja
+    gnumake
+    pkg-config
+    valgrind
+    ccache
   ];
 
+  programs.nix-ld.enable = true;
+  
   fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   fonts.fontconfig.useEmbeddedBitmaps = true;
   # List services that you want to enable:
