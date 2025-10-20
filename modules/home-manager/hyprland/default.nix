@@ -156,8 +156,8 @@
         };
 
         misc = {
-          vfr = true;
-          vrr = 1;
+          vfr = false;
+          vrr = 0;
           force_default_wallpaper = -1;
           disable_hyprland_logo = true;
         };

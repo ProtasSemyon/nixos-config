@@ -10,9 +10,10 @@
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = [ "kvm-amd" "amdgpu" ];
   boot.extraModulePackages = [ ];
-
+        # "amdgpu.freesync_video=1"
+  boot.kernelParams = [  "amdgpu.modeset=1" "amdgpu.dpm=1" "amdgpu.dc=1" ];
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/225a9ff4-4e5d-4553-983e-587722460814";
       fsType = "btrfs";

@@ -26,6 +26,18 @@ in
 
   networking.networkmanager.enable = true; 
 
+  services.resolved.enable = true;
+  services.fwupd.enable = true;
+  networking.networkmanager.dns = "systemd-resolved";
+
+
+  networking.nat = {
+    enable = true;
+    enableIPv6 = true;
+    externalInterface = "eth0";
+    internalInterfaces = [ "wg0" ];
+  };
+
   time.timeZone = "Europe/Minsk";
 
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
@@ -103,7 +115,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.smn = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "kvm" "adbusers" ];
+    extraGroups = [ "wheel" "networkmanager" "kvm" "adbusers" "docker"];
   };
 
   home-manager = {
@@ -153,7 +165,18 @@ in
     pkg-config
     valgrind
     ccache
+
+    dotnet-runtime
+
+    slack
+
+    docker-compose
+    #jetbrains-toolbox
+
+    wireguard-tools
   ];
+
+  virtualisation.docker.enable = true;
 
   programs.nix-ld.enable = true;
   
