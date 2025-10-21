@@ -65,7 +65,7 @@
 
 
     home.pointerCursor = {
-      name = "volantes_cursors";
+      name = "volantes_light_cursors";
       size = 24;
       package = pkgs.volantes-cursors;
 
@@ -77,20 +77,18 @@
       sway.enable = true;
     };
 
-   # services.hyprpaper = {
-   #   enable = true;
-   #   settings = {
-   #     preload = [
-   #       "$HOME/Pictures/Wallpapers/wallpapers.png"
-   #       "$HOME/Pictures/Wallpapers/ForestGirl.png"
-   #     ];
-   #     wallpaper = [
-   #       #"eDP-1,${config.home.homeDirectory or "~"}/Pictures/Wallpapers/wallpapers.png"
-   #       "eDP-1,$HOME/Pictures/Wallpapers/ForestGirl.png"
-   #       "HDMI-A-1, $HOME/Pictures/Wallpapers/ForestGirl.png"
-   #     ];
-   #   };
-   # };
+   services.hyprpaper = {
+     enable = true;
+     settings = {
+       preload = [
+         "$HOME/Pictures/Wallpapers/MagicForest.png"
+       ];
+       wallpaper = [
+         "eDP-1,$HOME/Pictures/Wallpapers/MagicForest.png"
+         "HDMI-A-1, $HOME/Pictures/Wallpapers/MagicForest.png"
+       ];
+     };
+   };
 
     wayland.windowManager.hyprland = {
       enable = true;

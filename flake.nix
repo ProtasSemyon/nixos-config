@@ -34,14 +34,19 @@
       url = "github:ProtasSemyon/edid-fix-lenovo-ideapad-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
-  
 
-  outputs = { self, nixpkgs, nvf, ... }@inputs: let 
-    system = "x86_64-linux"; 
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+
+  outputs = { self, nixpkgs, nvf, ... }@inputs: let
+    system = "x86_64-linux";
   in {
-    packages.${system}.neovim = 
-      (nvf.lib.neovimConfiguration 
+    packages.${system}.neovim =
+      (nvf.lib.neovimConfiguration
       {
         pkgs = nixpkgs.legacyPackages.${system};
         modules = [
@@ -66,6 +71,7 @@
         inputs.home-manager.nixosModules.default
         inputs.nixos-hardware.nixosModules.lenovo-ideapad-slim-5
         inputs.nix-gc-env.nixosModules.default
+        inputs.nix-index-database.nixosModules.nix-index
         inputs.distro-grub-themes.nixosModules.${system}.default
       ];
     };

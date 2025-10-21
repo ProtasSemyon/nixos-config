@@ -1,16 +1,16 @@
 { config, lib, pkgs, inputs, system, self, ... }:
-let 
+let
   hm = import ../../modules/home-manager;
   nix-conf = import ../../modules/nixos;
-in 
+in
 {
   imports =
-    [ 
+    [
       ./hardware-configuration.nix
       ./edid-configuration.nix
       nix-conf.boot
       nix-conf.programs.steam
-      
+
       hm.hyprland
       hm.fish
       hm.foot
@@ -22,10 +22,10 @@ in
     enable = true;
     theme = "nixos";
   };
-    
-  networking.hostName = "saymoon"; 
 
-  networking.networkmanager.enable = true; 
+  networking.hostName = "saymoon";
+
+  networking.networkmanager.enable = true;
 
   services.resolved.enable = true;
   services.fwupd.enable = true;
@@ -120,10 +120,10 @@ in
   };
 
   home-manager = {
-    extraSpecialArgs = { 
-      inherit inputs; 
-      inherit system; 
-      inherit self; 
+    extraSpecialArgs = {
+      inherit inputs;
+      inherit system;
+      inherit self;
     };
     useGlobalPkgs = true;
     backupFileExtension = "backup";
@@ -135,10 +135,10 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim 
+    vim
     wget
-    direnv    
-    mesa 
+    direnv
+    mesa
     vulkan-tools
     pulseaudioFull
 
@@ -179,12 +179,15 @@ in
 
     eww
     volantes-cursors
+
+    nixd
+    basedpyright
   ];
 
   virtualisation.docker.enable = true;
 
   programs.nix-ld.enable = true;
-  
+
   fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   fonts.fontconfig.useEmbeddedBitmaps = true;
   # List services that you want to enable:
@@ -197,6 +200,14 @@ in
     web.enable = true;
   };
 
+  programs.command-not-found.enable = false;
+
+  programs.nix-index = {
+      enable = true;
+
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+    };
+
   system.stateVersion = "25.05";
 }
-
