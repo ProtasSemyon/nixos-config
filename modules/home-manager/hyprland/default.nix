@@ -65,9 +65,9 @@
 
 
     home.pointerCursor = {
-      name = "dracula-cursors";
+      name = "volantes_cursors";
       size = 24;
-      package = inputs.dracula-cursors.packages."${system}".default;
+      package = pkgs.volantes-cursors;
 
       enable = true;
 
@@ -77,20 +77,20 @@
       sway.enable = true;
     };
 
-    services.hyprpaper = {
-      enable = true;
-      settings = {
-        preload = [
-          "$HOME/Pictures/Wallpapers/wallpapers.png"
-          "$HOME/Pictures/Wallpapers/ForestGirl.png"
-        ];
-        wallpaper = [
-          #"eDP-1,${config.home.homeDirectory or "~"}/Pictures/Wallpapers/wallpapers.png"
-          "eDP-1,$HOME/Pictures/Wallpapers/ForestGirl.png"
-          "HDMI-A-1, $HOME/Pictures/Wallpapers/ForestGirl.png"
-        ];
-      };
-    };
+   # services.hyprpaper = {
+   #   enable = true;
+   #   settings = {
+   #     preload = [
+   #       "$HOME/Pictures/Wallpapers/wallpapers.png"
+   #       "$HOME/Pictures/Wallpapers/ForestGirl.png"
+   #     ];
+   #     wallpaper = [
+   #       #"eDP-1,${config.home.homeDirectory or "~"}/Pictures/Wallpapers/wallpapers.png"
+   #       "eDP-1,$HOME/Pictures/Wallpapers/ForestGirl.png"
+   #       "HDMI-A-1, $HOME/Pictures/Wallpapers/ForestGirl.png"
+   #     ];
+   #   };
+   # };
 
     wayland.windowManager.hyprland = {
       enable = true;
@@ -118,7 +118,7 @@
         };
 
         monitor = [
-          "eDP-1, preferred, auto, auto"
+          "eDP-1, 2880x1800@120, auto, auto, vrr, 1"
         ];
 
         general = {

@@ -39,10 +39,6 @@
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # # fonts?
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-    (yandex-music.override {
-      trayEnabled = true;
-      electronArguments = "";
-    })
 
     # (pkgs.symlinkJoin {
     #   name = "vlc";

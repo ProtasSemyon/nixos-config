@@ -29,7 +29,13 @@
     };
 
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+
+    edid-fix = {
+      url = "github:ProtasSemyon/edid-fix-lenovo-ideapad-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
+  
 
   outputs = { self, nixpkgs, nvf, ... }@inputs: let 
     system = "x86_64-linux"; 

@@ -4,9 +4,9 @@
   home-manager.users.smn = { pkgs, ... } : {
     programs.git = {
       enable = true;
-      userName  = "Semyon Protas";
-      userEmail = "semyon.protas@gmail.com";
-      extraConfig = {
+      settings = {
+        user.name  = "Semyon Protas";
+        user.email = "semyon.protas@gmail.com";
         init.defaultBranch = "main";
         core.autocrlf = true;
       };

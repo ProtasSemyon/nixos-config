@@ -7,6 +7,7 @@ in
   imports =
     [ 
       ./hardware-configuration.nix
+      ./edid-configuration.nix
       nix-conf.boot
       nix-conf.programs.steam
       
@@ -174,6 +175,10 @@ in
     #jetbrains-toolbox
 
     wireguard-tools
+    zed-editor
+
+    eww
+    volantes-cursors
   ];
 
   virtualisation.docker.enable = true;

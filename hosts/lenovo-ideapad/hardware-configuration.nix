@@ -10,37 +10,21 @@
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" "amdgpu" ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
-        # "amdgpu.freesync_video=1"
-  boot.kernelParams = [  "amdgpu.modeset=1" "amdgpu.dpm=1" "amdgpu.dc=1" ];
+
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/225a9ff4-4e5d-4553-983e-587722460814";
+    { device = "/dev/disk/by-uuid/a03f7271-120b-4560-9ff0-eb832f90e0c9";
       fsType = "btrfs";
-      options = [ "subvol=root" ];
-    };
-
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/225a9ff4-4e5d-4553-983e-587722460814";
-      fsType = "btrfs";
-      options = [ "subvol=home" ];
-    };
-
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/225a9ff4-4e5d-4553-983e-587722460814";
-      fsType = "btrfs";
-      options = [ "subvol=nix" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/12CE-A600";
+    { device = "/dev/disk/by-uuid/27AE-5DA0";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/b6692e49-f371-42f8-8379-ac5cd8f39c34"; }
-    ];
+  swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
