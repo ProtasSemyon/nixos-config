@@ -37,26 +37,6 @@
         "type": "github"
       }
     },
-    "edid-fix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1761056367,
-        "narHash": "sha256-F/cddhBL2vjCATj7UbAxyzQBEzRhZYw51z5IZbfz5V0=",
-        "owner": "ProtasSemyon",
-        "repo": "edid-fix-lenovo-ideapad-nixos",
-        "rev": "9a7113b5517607b8395f078d9e697c5f0df41454",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ProtasSemyon",
-        "repo": "edid-fix-lenovo-ideapad-nixos",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -363,7 +343,6 @@
       "inputs": {
         "distro-grub-themes": "distro-grub-themes",
         "dracula-cursors": "dracula-cursors",
-        "edid-fix": "edid-fix",
         "home-manager": "home-manager",
         "nix-gc-env": "nix-gc-env",
         "nix-index-database": "nix-index-database",

@@ -7,9 +7,10 @@ in
   imports =
     [
       ./hardware-configuration.nix
-      ./edid-configuration.nix
       nix-conf.boot
       nix-conf.programs.steam
+      nix-conf.power
+      nix-conf.edid
 
       hm.hyprland
       hm.fish

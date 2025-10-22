@@ -30,11 +30,6 @@
 
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
 
-    edid-fix = {
-      url = "github:ProtasSemyon/edid-fix-lenovo-ideapad-nixos";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
