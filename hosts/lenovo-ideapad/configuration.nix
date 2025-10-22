@@ -181,12 +181,21 @@ in
     volantes-cursors
 
     nixd
+    nil
     basedpyright
+    
+    nix-ld
   ];
 
   virtualisation.docker.enable = true;
 
   programs.nix-ld.enable = true;
+      
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+  ];
+  
 
   fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   fonts.fontconfig.useEmbeddedBitmaps = true;
@@ -203,11 +212,11 @@ in
   programs.command-not-found.enable = false;
 
   programs.nix-index = {
-      enable = true;
+    enable = true;
 
-      enableBashIntegration = true;
-      enableFishIntegration = true;
-    };
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+  };
 
   system.stateVersion = "25.05";
 }
