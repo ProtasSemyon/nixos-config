@@ -1,5 +1,17 @@
 { pkgs, config, system, inputs, ... }:
+let
+  hyprpaper = ./hyprpaper;
+in
 {
+  imports = [
+    hyprpaper
+  ];
+  
+  hyprpaper = {
+    enable = true;
+    wallpaper = "MagicForest.png";
+  };
+  
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
@@ -76,19 +88,6 @@
       hyprcursor.enable = true;
       sway.enable = true;
     };
-
-   services.hyprpaper = {
-     enable = true;
-     settings = {
-       preload = [
-         "$HOME/Pictures/Wallpapers/MagicForest.png"
-       ];
-       wallpaper = [
-         "eDP-1,$HOME/Pictures/Wallpapers/MagicForest.png"
-         "HDMI-A-1, $HOME/Pictures/Wallpapers/MagicForest.png"
-       ];
-     };
-   };
 
     wayland.windowManager.hyprland = {
       enable = true;
