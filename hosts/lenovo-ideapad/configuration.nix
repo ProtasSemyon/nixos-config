@@ -2,14 +2,15 @@
 let
   hm = import ../../modules/home-manager;
   nix-conf = import ../../modules/nixos;
+  edid = import ./edid;
 in
 {
   imports =
     [
       ./hardware-configuration.nix
+      edid
       nix-conf.boot
       nix-conf.programs.steam
-      nix-conf.edid
 
       hm.hyprland
       hm.fish
