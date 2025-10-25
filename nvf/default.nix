@@ -1,4 +1,4 @@
-{pkgs, nvim-config, ...}: 
+{...}: 
 {
   vim = {
     theme = {

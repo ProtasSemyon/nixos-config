@@ -1,4 +1,4 @@
-{ pkgs, config, system, inputs, ... }:
+{ pkgs, ... }:
 let
   hyprpaper = ./hyprpaper;
 in
@@ -26,7 +26,7 @@ in
   };
 
   programs.hyprland.enable = true;
-  environment.sessionVariables = rec {
+  environment.sessionVariables =  {
     NIXOS_OZONE_WL = "1";
     HYPRSHOT_DIR = "$HOME/Pictures/Screenshots";
   };

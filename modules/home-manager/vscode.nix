@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   home-manager.users.smn = { pkgs, ... } : {

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, system, self, ... }:
+{ lib, pkgs, inputs, system, self, ... }:
 let
   hm = import ../../modules/home-manager;
   nix-conf = import ../../modules/nixos;
@@ -66,6 +66,13 @@ in
     thunar-archive-plugin
     thunar-volman
   ];
+  
+  programs.wireshark.enable = true;
+  programs.wireshark.dumpcap.enable = true;
+  
+  programs.direnv.enable = true;
+  programs.direnv.enableFishIntegration = true;
+  
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
   #Thunar
@@ -117,7 +124,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.smn = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "kvm" "adbusers" "docker"];
+    extraGroups = [ "wheel" "networkmanager" "kvm" "adbusers" "docker" "wireshark"];
   };
 
   home-manager = {
@@ -138,7 +145,6 @@ in
   environment.systemPackages = with pkgs; [
     vim
     wget
-    direnv
     mesa
     vulkan-tools
     pulseaudioFull
@@ -178,14 +184,13 @@ in
     wireguard-tools
     zed-editor
 
-    eww
     volantes-cursors
 
     nixd
     nil
-    basedpyright
     
     nix-ld
+    wireshark
   ];
 
   virtualisation.docker.enable = true;

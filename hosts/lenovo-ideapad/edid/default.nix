@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 let
   edid-fix = pkgs.stdenv.mkDerivation {
     pname = "edid-fix";

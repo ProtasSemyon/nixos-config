@@ -1,6 +1,6 @@
-{ config, lib, pkgs, ... }:
+{ ... }:
 {
-  home-manager.users.smn = { config, lib, pkgs, ... }:
+  home-manager.users.smn = { ... }:
   {
     programs.foot = {
       enable = true;

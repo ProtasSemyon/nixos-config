@@ -16,11 +16,6 @@
 
     dracula-cursors.url = "github:ProtasSemyon/dracula-cursors-nixos";
 
-    nvchad4nix = {
-      url = "github:nix-community/nix4nvchad";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-gc-env.url = "github:Julow/nix-gc-env";
 
     nvf = {
@@ -45,7 +40,7 @@
       {
         pkgs = nixpkgs.legacyPackages.${system};
         modules = [
-          ({ config, lib, pkgs, ... }: {
+          ({ ... }: {
             _module.args = {
               nvim-config = inputs.nvim-config;
             };
