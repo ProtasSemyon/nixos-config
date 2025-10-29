@@ -88,13 +88,19 @@ in
 
   hardware.bluetooth = {
     enable = true;
+    powerOnBoot = true;
     settings = {
       General = {
+        Enable = "Source,Sink,Media,Socket";
         Experimental = true;
+        FastConnectable = true;
+      };
+      Policy = {
+        AutoEnable = true;
       };
     };
   };
-  hardware.bluetooth.powerOnBoot = true;
+  
   services.blueman.enable = true;
 
   # Enable the X11 windowing system.
@@ -192,6 +198,8 @@ in
     
     nix-ld
     wireshark
+    
+    mpd-mpris
   ];
 
   virtualisation.docker.enable = true;
