@@ -121,19 +121,18 @@ in
         general = {
           gaps_in = 5;
           gaps_out = 5;
-
+        
           resize_on_border = true;
-          
           layout = "dwindle";
-
-          "col.active_border" = "rgb(44475a) rgb(bd93f9) 90deg";
-          "col.inactive_border" = "rgba(44475aaa)";
-          "col.nogroup_border" = "rgba(282a36dd)";
-          "col.nogroup_border_active" = "rgb(bd93f9) rgb(44475a) 90deg";
+        
+          "col.active_border" = "rgba(2FBF71cc) rgba(75D6FFcc) 90deg";
+          "col.inactive_border" = "rgba(1C3A2Baa)";
+        
+          "col.nogroup_border" = "rgba(10281Fcc)";
+          "col.nogroup_border_active" = "rgba(75D6FFaa) rgba(2FBF71aa) 90deg";
+        
           no_border_on_floating = false;
           border_size = 2;
-
-
         };
 
         decoration = {
@@ -290,8 +289,8 @@ in
 
         group = {
           groupbar = {
-            "col.active" = "rgb(bd93f9) rgb(44475a) 90deg";
-            "col.inactive" = "rgba(282a36dd)";
+            "col.active" = "rgba(2FBF71bb) rgba(75D6FFbb) 90deg";
+            "col.inactive" = "rgba(10281Fcc)";
           };
         };
       };
