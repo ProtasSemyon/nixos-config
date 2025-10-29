@@ -134,6 +134,7 @@ in
       inherit self;
     };
     useGlobalPkgs = true;
+    useUserPackages = true;
     backupFileExtension = "backup";
     users = {
       "smn" = import ./home.nix;
@@ -202,7 +203,6 @@ in
     zlib
   ];
   
-
   fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   fonts.fontconfig.useEmbeddedBitmaps = true;
   # List services that you want to enable:
