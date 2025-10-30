@@ -60,11 +60,14 @@ in
   programs.adb.enable = true;
   programs.firefox.enable = true;
 
-  #Thunar
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
     thunar-archive-plugin
     thunar-volman
+  ];
+  
+  systemd.tmpfiles.rules = [
+    "w /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode - - - - 1"
   ];
   
   programs.wireshark.enable = true;
@@ -75,7 +78,6 @@ in
   
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
-  #Thunar
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
