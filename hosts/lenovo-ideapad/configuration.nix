@@ -11,6 +11,7 @@ in
       edid
       nix-conf.boot
       nix-conf.programs.steam
+      nix-conf.programs.thunar
 
       hm.hyprland
       hm.fish
@@ -59,12 +60,6 @@ in
 
   programs.adb.enable = true;
   programs.firefox.enable = true;
-
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-archive-plugin
-    thunar-volman
-  ];
   
   systemd.tmpfiles.rules = [
     "w /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode - - - - 1"
@@ -75,9 +70,6 @@ in
   
   programs.direnv.enable = true;
   programs.direnv.enableFishIntegration = true;
-  
-  services.gvfs.enable = true; # Mount, trash, and other functionalities
-  services.tumbler.enable = true; # Thumbnail support for images
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
