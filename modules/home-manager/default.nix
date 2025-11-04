@@ -4,4 +4,5 @@
   git = import ./git.nix;
   vscode = import ./vscode.nix;
   hyprland = import ./hyprland;
+  waybar = import ./waybar.nix;
 }

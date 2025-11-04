@@ -18,7 +18,7 @@
     webcord
     logseq
     vlc
-
+    
     #Gaming
     (lutris.override {
       extraLibraries =  pkgs: [
@@ -94,6 +94,37 @@
   home.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     # EDITOR = "emacs";
+  };
+  
+  home.pointerCursor = {
+    name = "volantes_light_cursors";
+    size = 24;
+    package = pkgs.volantes-cursors;
+
+    enable = true;
+
+    x11.enable = true;
+    gtk.enable = true;
+    hyprcursor.enable = true;
+    sway.enable = true;
+  };
+  
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Orchis-Dark";
+      package = pkgs.orchis-theme;
+    };
+    iconTheme.name = "Papirus-Dark";
+    iconTheme.package = pkgs.catppuccin-papirus-folders.override {
+      flavor = "macchiato";
+      accent = "sapphire";
+    };
+  };
+  
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
   };
 
   # Let Home Manager install and manage itself.

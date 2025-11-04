@@ -14,6 +14,7 @@ in
       nix-conf.programs.thunar
 
       hm.hyprland
+      hm.waybar
       hm.fish
       hm.foot
       hm.git
@@ -146,6 +147,7 @@ in
   environment.systemPackages = with pkgs; [
     vim
     wget
+    btop
     mesa
     vulkan-tools
     pulseaudioFull
@@ -160,7 +162,6 @@ in
     catppuccin-sddm
 
     #Programming
-    rustup
 
     #C++
     gcc
@@ -204,8 +205,8 @@ in
     stdenv.cc.cc.lib
     zlib
   ];
-  
-  fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+
+  fonts.packages = [ pkgs.font-awesome] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   fonts.fontconfig.useEmbeddedBitmaps = true;
   # List services that you want to enable:
 

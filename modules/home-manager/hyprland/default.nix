@@ -49,18 +49,20 @@ in
 
       temperature = {
         day = 5500;
-        night = 3700;
+        night = 3400;
       };
     };
     
     services.blueman-applet.enable = true;
     programs.rofi.enable = true;
 
-    xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    xdg.portal.extraPortals = [ 
+      pkgs.xdg-desktop-portal-gtk 
+      pkgs.xdg-desktop-portal-hyprland
+    ];
 
     home.packages = with pkgs; [
       qimgv
-      waybar
       hyprsunset
       hyprshot
       hyprcursor
@@ -74,20 +76,6 @@ in
 
       libnotify
     ];
-
-
-    home.pointerCursor = {
-      name = "volantes_light_cursors";
-      size = 24;
-      package = pkgs.volantes-cursors;
-
-      enable = true;
-
-      x11.enable = true;
-      gtk.enable = true;
-      hyprcursor.enable = true;
-      sway.enable = true;
-    };
 
     wayland.windowManager.hyprland = {
       enable = true;
@@ -120,7 +108,7 @@ in
 
         general = {
           gaps_in = 5;
-          gaps_out = 5;
+          gaps_out = 2;
         
           resize_on_border = true;
           layout = "dwindle";
@@ -132,7 +120,7 @@ in
           "col.nogroup_border_active" = "rgba(75D6FFaa) rgba(2FBF71aa) 90deg";
         
           no_border_on_floating = false;
-          border_size = 2;
+          border_size = 1;
         };
 
         decoration = {

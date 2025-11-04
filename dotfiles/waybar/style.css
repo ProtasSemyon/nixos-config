@@ -1,0 +1,202 @@
+* {
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+window#waybar {
+    font-family: FiraCode, FontAwesome, monospace;
+    background-color: rgba(16, 40, 31, 0.7); /* Deep forest green */
+    border-bottom: 0px;
+    color: #CDE8BE; /* Soft leaf text */
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+window#waybar.empty #window {
+    background-color: transparent;
+}
+
+.modules-right {
+    margin: 4px 2px 4px 0;
+}
+.modules-center {
+    margin: 4px 5px 4px 5px;
+}
+.modules-left {
+    margin: 4px 0 4px 2px;
+}
+
+button {
+    border: none;
+}
+
+/* Workspaces */
+#workspaces {
+    background-color: #1C3A2B; /* Slightly lighter green shadow */
+}
+
+#workspaces button {
+    padding: 0 5px;
+    background-color: transparent;
+    color: #CDE8BE;
+    border-radius: 0;
+}
+
+#workspaces button:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+#workspaces button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+#workspaces button:hover {
+    color: #F8E58C; /* Warm sunlight hover */
+}
+
+#workspaces button.focused {
+    background-color: #2FBF71; /* Emerald green active */
+    color: #10281F;
+}
+
+#workspaces button.urgent {
+    background-color: #E58EB2; /* Rose pink urgent */
+    color: #10281F;
+}
+
+/* Modules */
+#idle_inhibitor,
+#cava,
+#scratchpad,
+#mode,
+#window,
+#clock,
+#battery,
+#backlight,
+#wireplumber,
+#tray,
+#mpris,
+#temperature,
+#memory,
+#cpu,
+#network,
+#load {
+    padding: 0 10px;
+    background-color: #1C3A2B;
+    color: #CDE8BE;
+}
+
+/* Temperature critical */
+#temperature.critical {
+    background-color: #E58EB2; /* Rose pink critical */
+    color: #10281F;
+}
+
+
+#mode {
+    background-color: #2FBF71;
+    color: #10281F;
+}
+
+/* Margins */
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+.modules-right > widget:last-child > #workspaces {
+    margin-right: 0;
+}
+
+#cava {
+    padding: 0 5px;
+}
+
+/* Battery states */
+#battery.charging, #battery.plugged {
+    background-color: #75D6FF; /* Sky blue charging */
+    color: #10281F;
+}
+
+@keyframes blink {
+    to {
+        background-color: #1C3A2B;
+        color: #CDE8BE;
+    }
+}
+
+#battery.critical:not(.charging) {
+    background-color: #E58EB2; /* Same rose as urgent */
+    color: #10281F;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(12);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+label:focus {
+    background-color: #4EF2FF; /* Cyan glow focus */
+    color: #10281F;
+}
+
+/* Audio muted */
+#wireplumber.muted {
+    background-color: #7A8B82; /* Mist gray muted */
+    color: #10281F;
+}
+
+/* Tray icons */
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+/* Music player */
+#mpris.playing {
+    background-color: #F8E58C;
+    color: #10281F;
+}
+
+#tray menu {
+    font-family: sans-serif;
+}
+
+/* Scratchpad */
+#scratchpad.empty {
+    background: transparent;
+}
+
+#network.disabled {
+    background-color: #7A8B82;
+    color: #10281F;
+}
+
+/* Нет соединения */
+#network.disconnected {
+    background-color: #E58EB2;
+    color: #10281F;
+}
+
+/* Любое соединение активно */
+#network.linked {
+    background-color: #2FBF71;
+    color: #10281F;
+}
+
+/* Ethernet */
+#network.ethernet {
+    background-color: #50C878;
+    color: #10281F;
+}
+
+/* Wi-Fi */
+#network.wifi {
+    background-color: #75D6FF;
+    color: #10281F;
+}
