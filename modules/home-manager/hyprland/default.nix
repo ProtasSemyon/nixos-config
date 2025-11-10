@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, system, ... }:
 let
   hyprpaper = ./hyprpaper;
 in
@@ -11,7 +11,7 @@ in
     enable = true;
     wallpaper = "MagicForest.png";
   };
-  
+
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
@@ -75,6 +75,8 @@ in
       dmenu
 
       libnotify
+      
+      inputs.hyprland-guiutils.packages."${system}".default
     ];
 
     wayland.windowManager.hyprland = {
@@ -98,9 +100,12 @@ in
           };
         };
 
-        gestures = {
-          workspace_swipe = true;
-        };
+        gesture = [
+          "3, horizontal, workspace"
+          "3, vertical, mod: ALT, close"
+          "4, vertical, fullscreen"
+          "3, vertical, special, magic"
+        ];
 
         monitor = [
           "eDP-1, 2880x1800@120, auto, auto, vrr, 1"
@@ -260,7 +265,6 @@ in
           "suppressevent maximize, class:.*"
           "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
 
-          #XWayland Dracula
           "bordercolor rgb(ff5555),xwayland:1"
 
           #Foot opacity

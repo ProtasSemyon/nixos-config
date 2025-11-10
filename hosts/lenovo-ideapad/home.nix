@@ -30,7 +30,6 @@
     prismlauncher
     xclicker
     
-    inputs.dracula-cursors.packages."${system}".default
     inputs.zen-browser.packages."${system}".default
     self.packages.${pkgs.stdenv.system}.neovim
 
@@ -124,7 +123,7 @@
   
   qt = {
     enable = true;
-    platformTheme = "gtk";
+    platformTheme.name = "gtk";
   };
 
   # Let Home Manager install and manage itself.

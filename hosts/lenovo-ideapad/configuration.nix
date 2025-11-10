@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, system, self, ... }:
+{ lib, pkgs, inputs, system, self, config, ... }:
 let
   hm = import ../../modules/home-manager;
   nix-conf = import ../../modules/nixos;
@@ -12,6 +12,8 @@ in
       nix-conf.boot
       nix-conf.programs.steam
       nix-conf.programs.thunar
+      
+      nix-conf.services.pipewire
 
       hm.hyprland
       hm.waybar
@@ -41,16 +43,44 @@ in
     externalInterface = "eth0";
     internalInterfaces = [ "wg0" ];
   };
-
+  
   time.timeZone = "Europe/Minsk";
 
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-36.9.5"
+  ];
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
+    
+    substituters = [
+      "https://mirror.sjtu.edu.cn/nix-channels/store" # Shanghai Jiao Tong University - best for Asia
+      "https://mirrors.ustc.edu.cn/nix-channels/store" # USTC backup mirror
+      "https://cache.nixos.org" # Official global cache
+      "https://nix-community.cachix.org" # Community packages
+      "https://hyprland.cachix.org"
+      "https://aseipp-nix-cache.global.ssl.fastly.net"
+    ];
+    
+    trusted-substituters = [ 
+      "https://mirror.sjtu.edu.cn/nix-channels/store" # Shanghai Jiao Tong University - best for Asia
+      "https://mirrors.ustc.edu.cn/nix-channels/store" # USTC backup mirror
+      "https://cache.nixos.org" # Official global cache
+      "https://nix-community.cachix.org" # Community packages
+      "https://hyprland.cachix.org"
+      "https://aseipp-nix-cache.global.ssl.fastly.net"
+    ];
+    
+    trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+    
+    http-connections = 128;
+    max-jobs = "auto";
   };
 
   nix.gc = {
@@ -109,15 +139,6 @@ in
   services.printing.enable = true;
 
   # Enable sound.
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    wireplumber.enable = true;
-  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
@@ -142,7 +163,7 @@ in
     };
   };
 
-  # List packages installed in system profile. To search, run:
+  # List packages installed in system ple. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
@@ -211,7 +232,14 @@ in
   # List services that you want to enable:
 
   services.openssh.enable = true;
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+    useRoutingFeatures = "both";
+  };
+  
+  networking.networkmanager.unmanaged  = [ config.services.tailscale.interfaceName ];
+  networking.firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ];
 
   services.deluge = {
     enable = true;

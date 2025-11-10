@@ -8,7 +8,7 @@
         set fish_greeting # Disable greeting
       '';
       shellAliases = {
-        nrs = "sudo nixos-rebuild switch --use-remote-sudo --flake /home/smn/nixos-config#saymoon";
+        nrs = "sudo nixos-rebuild switch --sudo --flake /home/smn/nixos-config#saymoon";
       };
     };
   };
