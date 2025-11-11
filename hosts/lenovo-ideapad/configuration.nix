@@ -49,6 +49,8 @@ in
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.android_sdk.accept_license = true;
+  
   nixpkgs.config.permittedInsecurePackages = [
     "electron-36.9.5"
   ];
@@ -219,6 +221,8 @@ in
     wireshark
     
     mpd-mpris
+    
+    androidenv.androidPkgs.androidsdk
   ];
 
   virtualisation.docker.enable = true;
