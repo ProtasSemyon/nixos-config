@@ -110,7 +110,6 @@ in
     keyMap = "us";
   };
 
-
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
@@ -172,6 +171,10 @@ in
     mesa
     vulkan-tools
     pulseaudioFull
+    pipewire
+    wireplumber
+    pamixer
+    helvum
 
     obsidian
 

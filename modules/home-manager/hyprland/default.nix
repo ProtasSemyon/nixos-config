@@ -275,7 +275,7 @@ in
           "waybar"
           "nm-applet --indicator"
           "[workspace 1 silent] zen"
-          "[workspace special:magic silent] telegram-desktop"
+          "[workspace special:magic silent] Telegram"
           "[workspace special:magic silent] yandex-music"
         ];
 

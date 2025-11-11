@@ -25,6 +25,11 @@
         # List library dependencies here
       ];
     })
+    
+    (yandex-music.override {
+        trayEnabled = true;     # Whenether to enable tray support
+        electronArguments = ""; # Extra arguments to electron executable
+    })
 
     appimage-run
     prismlauncher
