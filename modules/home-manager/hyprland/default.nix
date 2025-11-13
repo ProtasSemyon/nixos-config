@@ -280,9 +280,9 @@ in
         exec-once = [
           "waybar"
           "nm-applet --indicator"
-          "[workspace 1 silent] firefox"
+          "[workspace 1 silent] zen"
           "[workspace special:magic silent] Telegram"
-          "[workspace special:magic silent] yandex-music"
+
         ];
 
         group = {
