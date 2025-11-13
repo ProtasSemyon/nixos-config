@@ -10,8 +10,10 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    zen-browser.url = "github:ProtasSemyon/zen-browser-flake";
-
+    zen-browser = {
+      url = "github:LunaCOLON3/zen-browser-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-gc-env.url = "github:Julow/nix-gc-env";
 
     nvf = {
@@ -25,9 +27,9 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     hyprland-guiutils = {
-      url = "github:hyprwm/hyprland-guiutils";      
+      url = "github:hyprwm/hyprland-guiutils";
     };
 
     dotfiles = {
@@ -71,6 +73,7 @@
         };
         modules = [
           ./hosts/lenovo-ideapad/configuration.nix
+          inputs.zen-browser.nixosModules.zen-browser
           inputs.home-manager.nixosModules.default
           inputs.nixos-hardware.nixosModules.lenovo-ideapad-slim-5
           inputs.nix-gc-env.nixosModules.default

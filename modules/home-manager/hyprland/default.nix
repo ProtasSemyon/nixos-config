@@ -1,4 +1,9 @@
-{ pkgs, inputs, system, ... }:
+{
+  pkgs,
+  inputs,
+  system,
+  ...
+}:
 let
   hyprpaper = ./hyprpaper;
 in
@@ -6,7 +11,7 @@ in
   imports = [
     hyprpaper
   ];
-  
+
   hyprpaper = {
     enable = true;
     wallpaper = "MagicForest.png";
@@ -26,13 +31,11 @@ in
   };
 
   programs.hyprland.enable = true;
-  environment.sessionVariables =  {
+
+  environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     HYPRSHOT_DIR = "$HOME/Pictures/Screenshots";
   };
-
-  hardware.graphics.enable = true;
-  hardware.graphics.enable32Bit = true;
 
   services.xserver.videoDrivers = [ "amdgpu" ];
 
@@ -52,12 +55,12 @@ in
         night = 3400;
       };
     };
-    
+
     services.blueman-applet.enable = true;
     programs.rofi.enable = true;
 
-    xdg.portal.extraPortals = [ 
-      pkgs.xdg-desktop-portal-gtk 
+    xdg.portal.extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-hyprland
     ];
 
@@ -75,7 +78,7 @@ in
       dmenu
 
       libnotify
-      
+
       inputs.hyprland-guiutils.packages."${system}".default
     ];
 
@@ -91,7 +94,7 @@ in
         "$terminal" = "foot";
         "$fileManager" = "thunar";
         "$menu" = "rofi -show drun -show-icons";
-        
+
         input = {
           kb_layout = "us,ru";
           kb_options = "grp:caps_toggle,grp_led:caps";
@@ -114,16 +117,16 @@ in
         general = {
           gaps_in = 5;
           gaps_out = 2;
-        
+
           resize_on_border = true;
           layout = "dwindle";
-        
+
           "col.active_border" = "rgba(2FBF71cc) rgba(75D6FFcc) 90deg";
           "col.inactive_border" = "rgba(1C3A2Baa)";
-        
+
           "col.nogroup_border" = "rgba(10281Fcc)";
           "col.nogroup_border_active" = "rgba(75D6FFaa) rgba(2FBF71aa) 90deg";
-        
+
           no_border_on_floating = false;
           border_size = 1;
         };
@@ -184,7 +187,7 @@ in
             "workspacesIn, 1, 0.6, almostLinear, fade"
             "workspacesOut, 1, 1, almostLinear, fade"
           ];
-        };  
+        };
 
         bind = [
           "$mainMod, RETURN, exec, $terminal"
@@ -194,7 +197,7 @@ in
           "$mainMod, V, togglefloating,"
           "$mainMod, R, exec, $menu"
           "$mainMod, P, pseudo," # dwindle
-          "$mainMod, J, togglesplit," #dwindle
+          "$mainMod, J, togglesplit," # dwindle
 
           # Move focus with mainMod + arrow keys
           "$mainMod, left, movefocus, l"
@@ -269,12 +272,15 @@ in
 
           #Foot opacity
           "opacity 0.93,class:^(foot)$"
+
+          #Android build
+          "float, class:^(com\.example\..+)$"
         ];
 
         exec-once = [
           "waybar"
           "nm-applet --indicator"
-          "[workspace 1 silent] zen"
+          "[workspace 1 silent] firefox"
           "[workspace special:magic silent] Telegram"
           "[workspace special:magic silent] yandex-music"
         ];

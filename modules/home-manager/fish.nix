@@ -9,6 +9,7 @@
       '';
       shellAliases = {
         nrs = "sudo nixos-rebuild switch --sudo --flake /home/smn/nixos-config#saymoon";
+        nrsu = "sudo nixos-rebuild switch --sudo --upgrade --flake /home/smn/nixos-config#saymoon";
       };
     };
   };

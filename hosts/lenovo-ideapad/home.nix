@@ -10,7 +10,6 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    android-studio
     libreoffice
     neofetch
     neohtop
@@ -35,7 +34,6 @@
     prismlauncher
     xclicker
     
-    inputs.zen-browser.packages."${system}".default
     self.packages.${pkgs.stdenv.system}.neovim
 
     # # It is sometimes useful to fine-tune packages, for example, by applying

@@ -27,6 +27,14 @@ in
     enable = true;
     theme = "nixos";
   };
+  
+  environment.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_X11_EGL = "1";
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+    LIBVA_DRIVER_NAME = "radeonsi";
+  };
+
 
   networking.hostName = "saymoon";
 
@@ -49,7 +57,6 @@ in
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.android_sdk.accept_license = true;
   
   nixpkgs.config.permittedInsecurePackages = [
     "electron-36.9.5"
@@ -90,9 +97,10 @@ in
     dates = "weekly";
     delete_generations = "+5"; # Option added by nix-gc-env
   };
-
+  
   programs.adb.enable = true;
   programs.firefox.enable = true;
+  programs.zen-browser.enable = true;
   
   systemd.tmpfiles.rules = [
     "w /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode - - - - 1"
@@ -222,7 +230,8 @@ in
     
     mpd-mpris
     
-    androidenv.androidPkgs.androidsdk
+    libva
+    libva-utils    
   ];
 
   virtualisation.docker.enable = true;
@@ -261,6 +270,21 @@ in
     enableBashIntegration = true;
     enableFishIntegration = true;
   };
+  
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      mesa
+      libva
+      libvdpau
+      libvdpau-va-gl
+      libva-vdpau-driver
+      libva-utils
+    ];
+  };
+  
+  hardware.enableRedistributableFirmware = true;
 
   system.stateVersion = "25.05";
 }
