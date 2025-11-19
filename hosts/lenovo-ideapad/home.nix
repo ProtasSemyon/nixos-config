@@ -14,7 +14,7 @@
     neofetch
     neohtop
     telegram-desktop
-    webcord
+    discord
     logseq
     vlc
     

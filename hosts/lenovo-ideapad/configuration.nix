@@ -33,6 +33,9 @@ in
     MOZ_X11_EGL = "1";
     MOZ_DISABLE_RDD_SANDBOX = "1";
     LIBVA_DRIVER_NAME = "radeonsi";
+    
+    GOOGLE_CLOUD_PROJECT = "glass-chimera-478707-f5";
+    GOOGLE_CLOUD_PROJECT_ID = "glass-chimera-478707-f5";
   };
 
 
@@ -231,7 +234,9 @@ in
     mpd-mpris
     
     libva
-    libva-utils    
+    libva-utils  
+    
+    gemini-cli
   ];
 
   virtualisation.docker.enable = true;

@@ -111,7 +111,7 @@ in
         ];
 
         monitor = [
-          "eDP-1, 2880x1800@120, auto, auto, vrr, 1"
+          "eDP-1, 2880x1800@120, auto, auto"
         ];
 
         general = {
