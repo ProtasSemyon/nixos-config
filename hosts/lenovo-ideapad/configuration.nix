@@ -47,6 +47,12 @@ in
   services.fwupd.enable = true;
   networking.networkmanager.dns = "systemd-resolved";
 
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16*1024;
+    }
+  ];
 
   networking.nat = {
     enable = true;
