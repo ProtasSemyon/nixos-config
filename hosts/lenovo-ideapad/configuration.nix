@@ -1,43 +1,63 @@
-{ lib, pkgs, inputs, system, self, config, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  system,
+  self,
+  config,
+  ...
+}:
 let
   hm = import ../../modules/home-manager;
   nix-conf = import ../../modules/nixos;
   edid = import ./edid;
 in
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      edid
-      nix-conf.boot
-      nix-conf.programs.steam
-      nix-conf.programs.thunar
-      
-      nix-conf.services.pipewire
+  imports = [
+    ./hardware-configuration.nix
+    edid
+    nix-conf.boot
+    nix-conf.programs.steam
+    nix-conf.programs.thunar
 
-      hm.hyprland
-      hm.waybar
-      hm.fish
-      hm.foot
-      hm.git
-      hm.vscode
-    ];
+    nix-conf.services.pipewire
+
+    hm.hyprland
+    hm.waybar
+    hm.fish
+    hm.foot
+    hm.git
+    hm.vscode
+  ];
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      ciscoPacketTracer8 = prev.ciscoPacketTracer8.overrideAttrs (old: {
+        postFixup = ''
+          wrapProgram $out/bin/packettracer8 \
+          --unset QT_PLUGIN_PATH \
+          --unset QT_QPA_PLATFORMTHEME \
+          --set QT_QPA_PLATFORM_PLUGIN_PATH /opt/pt/lib/plugins/platforms \
+          --set LD_LIBRARY_PATH /opt/pt/bin:/opt/pt/lib
+        '';
+      });
+    })
+  ];
 
   distro-grub-themes = {
     enable = true;
     theme = "nixos";
   };
-  
+
   environment.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";
     MOZ_X11_EGL = "1";
     MOZ_DISABLE_RDD_SANDBOX = "1";
     LIBVA_DRIVER_NAME = "radeonsi";
-    
+
     GOOGLE_CLOUD_PROJECT = "glass-chimera-478707-f5";
     GOOGLE_CLOUD_PROJECT_ID = "glass-chimera-478707-f5";
   };
-
 
   networking.hostName = "saymoon";
 
@@ -50,7 +70,7 @@ in
   swapDevices = [
     {
       device = "/var/lib/swapfile";
-      size = 16*1024;
+      size = 16 * 1024;
     }
   ];
 
@@ -60,21 +80,24 @@ in
     externalInterface = "eth0";
     internalInterfaces = [ "wg0" ];
   };
-  
+
   time.timeZone = "Europe/Minsk";
 
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   nixpkgs.config.allowUnfree = true;
-  
+
   nixpkgs.config.permittedInsecurePackages = [
     "electron-36.9.5"
   ];
 
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     auto-optimise-store = true;
-    
+
     substituters = [
       "https://mirror.sjtu.edu.cn/nix-channels/store" # Shanghai Jiao Tong University - best for Asia
       "https://mirrors.ustc.edu.cn/nix-channels/store" # USTC backup mirror
@@ -83,8 +106,8 @@ in
       "https://hyprland.cachix.org"
       "https://aseipp-nix-cache.global.ssl.fastly.net"
     ];
-    
-    trusted-substituters = [ 
+
+    trusted-substituters = [
       "https://mirror.sjtu.edu.cn/nix-channels/store" # Shanghai Jiao Tong University - best for Asia
       "https://mirrors.ustc.edu.cn/nix-channels/store" # USTC backup mirror
       "https://cache.nixos.org" # Official global cache
@@ -92,11 +115,11 @@ in
       "https://hyprland.cachix.org"
       "https://aseipp-nix-cache.global.ssl.fastly.net"
     ];
-    
+
     trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
-    
+
     http-connections = 128;
     max-jobs = "auto";
   };
@@ -106,18 +129,18 @@ in
     dates = "weekly";
     delete_generations = "+5"; # Option added by nix-gc-env
   };
-  
+
   programs.adb.enable = true;
   programs.firefox.enable = true;
   programs.zen-browser.enable = true;
-  
+
   systemd.tmpfiles.rules = [
     "w /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode - - - - 1"
   ];
-  
+
   programs.wireshark.enable = true;
   programs.wireshark.dumpcap.enable = true;
-  
+
   programs.direnv.enable = true;
   programs.direnv.enableFishIntegration = true;
 
@@ -143,7 +166,7 @@ in
       };
     };
   };
-  
+
   services.blueman.enable = true;
 
   # Enable the X11 windowing system.
@@ -164,7 +187,14 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.smn = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "kvm" "adbusers" "docker" "wireshark"];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "kvm"
+      "adbusers"
+      "docker"
+      "wireshark"
+    ];
   };
 
   home-manager = {
@@ -233,28 +263,34 @@ in
 
     nixd
     nil
-    
+
     nix-ld
     wireshark
-    
+
     mpd-mpris
-    
+
     libva
-    libva-utils  
-    
+    libva-utils
+
     gemini-cli
+
+    ciscoPacketTracer8
   ];
 
   virtualisation.docker.enable = true;
 
   programs.nix-ld.enable = true;
-      
+
   programs.nix-ld.libraries = with pkgs; [
     stdenv.cc.cc.lib
     zlib
+    qt5.qtbase
   ];
 
-  fonts.packages = [ pkgs.font-awesome] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+  fonts.packages = [
+    pkgs.font-awesome
+  ]
+  ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   fonts.fontconfig.useEmbeddedBitmaps = true;
   # List services that you want to enable:
 
@@ -264,8 +300,8 @@ in
     openFirewall = true;
     useRoutingFeatures = "both";
   };
-  
-  networking.networkmanager.unmanaged  = [ config.services.tailscale.interfaceName ];
+
+  networking.networkmanager.unmanaged = [ config.services.tailscale.interfaceName ];
   networking.firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ];
 
   services.deluge = {
@@ -281,7 +317,7 @@ in
     enableBashIntegration = true;
     enableFishIntegration = true;
   };
-  
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -294,7 +330,7 @@ in
       libva-utils
     ];
   };
-  
+
   hardware.enableRedistributableFirmware = true;
 
   system.stateVersion = "25.05";
