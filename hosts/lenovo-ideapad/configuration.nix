@@ -19,6 +19,7 @@ in
     nix-conf.boot
     nix-conf.programs.steam
     nix-conf.programs.thunar
+    nix-conf.programs.cisco
 
     nix-conf.services.pipewire
 
@@ -28,20 +29,6 @@ in
     hm.foot
     hm.git
     hm.vscode
-  ];
-
-  nixpkgs.overlays = [
-    (final: prev: {
-      ciscoPacketTracer8 = prev.ciscoPacketTracer8.overrideAttrs (old: {
-        postFixup = ''
-          wrapProgram $out/bin/packettracer8 \
-          --unset QT_PLUGIN_PATH \
-          --unset QT_QPA_PLATFORMTHEME \
-          --set QT_QPA_PLATFORM_PLUGIN_PATH /opt/pt/lib/plugins/platforms \
-          --set LD_LIBRARY_PATH /opt/pt/bin:/opt/pt/lib
-        '';
-      });
-    })
   ];
 
   distro-grub-themes = {
@@ -99,21 +86,16 @@ in
     auto-optimise-store = true;
 
     substituters = [
-      "https://mirror.sjtu.edu.cn/nix-channels/store" # Shanghai Jiao Tong University - best for Asia
-      "https://mirrors.ustc.edu.cn/nix-channels/store" # USTC backup mirror
-      "https://cache.nixos.org" # Official global cache
       "https://nix-community.cachix.org" # Community packages
       "https://hyprland.cachix.org"
-      "https://aseipp-nix-cache.global.ssl.fastly.net"
+      "https://nixos-cache-proxy.elxreno.com"
     ];
 
     trusted-substituters = [
-      "https://mirror.sjtu.edu.cn/nix-channels/store" # Shanghai Jiao Tong University - best for Asia
-      "https://mirrors.ustc.edu.cn/nix-channels/store" # USTC backup mirror
       "https://cache.nixos.org" # Official global cache
       "https://nix-community.cachix.org" # Community packages
       "https://hyprland.cachix.org"
-      "https://aseipp-nix-cache.global.ssl.fastly.net"
+      "https://nixos-cache-proxy.elxreno.com"
     ];
 
     trusted-public-keys = [
@@ -273,8 +255,6 @@ in
     libva-utils
 
     gemini-cli
-
-    ciscoPacketTracer8
   ];
 
   virtualisation.docker.enable = true;
