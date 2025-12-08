@@ -21,6 +21,8 @@ in
     nix-conf.programs.thunar
     nix-conf.programs.cisco
 
+    nix-conf.desktop.kde
+
     nix-conf.services.pipewire
 
     hm.hyprland
@@ -53,7 +55,17 @@ in
   services.resolved.enable = true;
   services.fwupd.enable = true;
   networking.networkmanager.dns = "systemd-resolved";
-
+  programs.obs-studio = {
+    enable = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-backgroundremoval
+      obs-pipewire-audio-capture
+      obs-vaapi
+      obs-gstreamer
+      obs-vkcapture
+    ];
+  };
   swapDevices = [
     {
       device = "/var/lib/swapfile";
@@ -196,6 +208,7 @@ in
   # List packages installed in system ple. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    android-studio
     vim
     wget
     btop
@@ -255,6 +268,8 @@ in
     libva-utils
 
     gemini-cli
+
+    graalvmPackages.graalvm-oracle
   ];
 
   virtualisation.docker.enable = true;
@@ -275,14 +290,46 @@ in
   # List services that you want to enable:
 
   services.openssh.enable = true;
+
+  services.avahi = {
+    enable = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      workstation = true;
+    };
+    nssmdns = true;
+    openFirewall = true;
+  };
+
   services.tailscale = {
     enable = true;
     openFirewall = true;
     useRoutingFeatures = "both";
   };
 
+  services.cloudflare-warp = {
+    enable = true;
+    # Warp CLI
+    package = pkgs.cloudflare-warp;
+  };
+
+  # Calibre-Web
+  services.calibre-web = {
+    user = "smn";
+    enable = true;
+    listen.ip = "0.0.0.0";
+    listen.port = 8081;
+    options = {
+      enableBookUploading = true;
+      enableBookConversion = true;
+      calibreLibrary = "/home/smn/Calibre";
+    };
+  };
+
   networking.networkmanager.unmanaged = [ config.services.tailscale.interfaceName ];
   networking.firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ];
+  networking.firewall.allowedTCPPorts = [ 8081 ];
 
   services.deluge = {
     enable = true;

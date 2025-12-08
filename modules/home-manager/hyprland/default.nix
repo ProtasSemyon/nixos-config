@@ -20,7 +20,6 @@ in
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
-    package = pkgs.kdePackages.sddm;
     theme = "sddm-astronaut-theme";
     extraPackages = with pkgs.kdePackages; [
       qt5compat
@@ -273,7 +272,7 @@ in
           #Foot opacity
           "opacity 0.93,class:^(foot)$"
 
-          #Android build
+          #Flutter build
           "float, class:^(com\.example\..+)$"
         ];
 
