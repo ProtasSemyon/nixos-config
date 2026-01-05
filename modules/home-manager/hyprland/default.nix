@@ -78,7 +78,7 @@ in
 
       libnotify
 
-      inputs.hyprland-guiutils.packages."${system}".default
+      inputs.hyprland-guiutils.packages."${stdenv.hostPlatform.system}".default
     ];
 
     wayland.windowManager.hyprland = {

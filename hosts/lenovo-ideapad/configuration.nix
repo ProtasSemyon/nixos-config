@@ -33,9 +33,33 @@ in
     hm.vscode
   ];
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "ciscoPacketTracer8-8.2.2"
+  ];
+
   distro-grub-themes = {
     enable = true;
     theme = "nixos";
+  };
+
+  services.postgresql = {
+    enable = true;
+    enableTCPIP = true;
+    authentication = ''
+      host all all 0.0.0.0/0 trust
+    '';
+    initialScript = pkgs.writeText "initial.sql" ''
+      CREATE USER smn WITH PASSWORD 'password';
+      CREATE DATABASE booker OWNER smn;
+    '';
+  };
+
+  services.pgadmin = {
+    enable = true;
+    initialEmail = "foo@bar.com";
+    initialPasswordFile = pkgs.writeText "pgadminPW" ''
+      password
+    '';
   };
 
   environment.sessionVariables = {
@@ -51,7 +75,7 @@ in
   networking.hostName = "saymoon";
 
   networking.networkmanager.enable = true;
-
+  
   services.resolved.enable = true;
   services.fwupd.enable = true;
   networking.networkmanager.dns = "systemd-resolved";
@@ -86,10 +110,6 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-36.9.5"
-  ];
-
   nix.settings = {
     experimental-features = [
       "nix-command"
@@ -101,6 +121,7 @@ in
       "https://nix-community.cachix.org" # Community packages
       "https://hyprland.cachix.org"
       "https://nixos-cache-proxy.elxreno.com"
+      "s3://obsidian-open-source"
     ];
 
     trusted-substituters = [
@@ -112,6 +133,7 @@ in
 
     trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "obsidian-open-source:KP1UbL7OIibSjFo9/2tiHCYLm/gJMfy8Tim7+7P4o0I="
     ];
 
     http-connections = 128;
@@ -270,6 +292,7 @@ in
     gemini-cli
 
     graalvmPackages.graalvm-oracle
+    dia
   ];
 
   virtualisation.docker.enable = true;
@@ -298,7 +321,7 @@ in
       addresses = true;
       workstation = true;
     };
-    nssmdns = true;
+    nssmdns4 = true;
     openFirewall = true;
   };
 
@@ -360,5 +383,5 @@ in
 
   hardware.enableRedistributableFirmware = true;
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }
