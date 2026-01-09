@@ -1,4 +1,4 @@
-{  pkgs, inputs, system, self, ... }:
+{  pkgs, inputs, self, ... }:
 
 {
   home.username = "smn";
@@ -38,7 +38,7 @@
     prismlauncher
     xclicker
     
-    self.packages.${pkgs.stdenv.system}.neovim
+    self.packages.${stdenv.hostPlatform.system}.neovim
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -99,7 +99,8 @@
   #
   home.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    # EDITOR = "emacs";
+    GOOGLE_CLOUD_PROJECT = "glass-chimera-478707-f5";
+    GOOGLE_CLOUD_PROJECT_ID = "glass-chimera-478707-f5";
   };
   
   home.pointerCursor = {

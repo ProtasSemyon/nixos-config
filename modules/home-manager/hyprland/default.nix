@@ -126,7 +126,6 @@ in
           "col.nogroup_border" = "rgba(10281Fcc)";
           "col.nogroup_border_active" = "rgba(75D6FFaa) rgba(2FBF71aa) 90deg";
 
-          no_border_on_floating = false;
           border_size = 1;
         };
 

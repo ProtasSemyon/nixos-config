@@ -19,10 +19,7 @@ in
     nix-conf.boot
     nix-conf.programs.steam
     nix-conf.programs.thunar
-    nix-conf.programs.cisco
-
-    nix-conf.desktop.kde
-
+    
     nix-conf.services.pipewire
 
     hm.hyprland
@@ -41,7 +38,8 @@ in
     enable = true;
     theme = "nixos";
   };
-
+  
+  #TODO: move to postgresql.nix
   services.postgresql = {
     enable = true;
     enableTCPIP = true;
@@ -54,6 +52,7 @@ in
     '';
   };
 
+  #TODO: move to postgresql.nix
   services.pgadmin = {
     enable = true;
     initialEmail = "foo@bar.com";
@@ -62,23 +61,15 @@ in
     '';
   };
 
-  environment.sessionVariables = {
-    MOZ_ENABLE_WAYLAND = "1";
-    MOZ_X11_EGL = "1";
-    MOZ_DISABLE_RDD_SANDBOX = "1";
-    LIBVA_DRIVER_NAME = "radeonsi";
-
-    GOOGLE_CLOUD_PROJECT = "glass-chimera-478707-f5";
-    GOOGLE_CLOUD_PROJECT_ID = "glass-chimera-478707-f5";
-  };
-
   networking.hostName = "saymoon";
-
   networking.networkmanager.enable = true;
-  
+
   services.resolved.enable = true;
   services.fwupd.enable = true;
   networking.networkmanager.dns = "systemd-resolved";
+  networking.firewall.checkReversePath = "loose";
+
+  #TODO: move to obs-studio
   programs.obs-studio = {
     enable = true;
     plugins = with pkgs.obs-studio-plugins; [
@@ -90,19 +81,14 @@ in
       obs-vkcapture
     ];
   };
+  
+  
   swapDevices = [
     {
       device = "/var/lib/swapfile";
       size = 16 * 1024;
     }
   ];
-
-  networking.nat = {
-    enable = true;
-    enableIPv6 = true;
-    externalInterface = "eth0";
-    internalInterfaces = [ "wg0" ];
-  };
 
   time.timeZone = "Europe/Minsk";
 
@@ -121,7 +107,6 @@ in
       "https://nix-community.cachix.org" # Community packages
       "https://hyprland.cachix.org"
       "https://nixos-cache-proxy.elxreno.com"
-      "s3://obsidian-open-source"
     ];
 
     trusted-substituters = [
@@ -133,7 +118,6 @@ in
 
     trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "obsidian-open-source:KP1UbL7OIibSjFo9/2tiHCYLm/gJMfy8Tim7+7P4o0I="
     ];
 
     http-connections = 128;
@@ -146,7 +130,6 @@ in
     delete_generations = "+5"; # Option added by nix-gc-env
   };
 
-  programs.adb.enable = true;
   programs.firefox.enable = true;
   programs.zen-browser.enable = true;
 
@@ -231,6 +214,7 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     android-studio
+    android-tools
     vim
     wget
     btop
@@ -240,7 +224,6 @@ in
     pipewire
     wireplumber
     pamixer
-    helvum
 
     obsidian
 
@@ -250,21 +233,6 @@ in
     #Theme
     sddm-astronaut
     catppuccin-sddm
-
-    #Programming
-
-    #C++
-    gcc
-    clang
-    clang-tools
-    lldb
-    gdb
-    cmake
-    ninja
-    gnumake
-    pkg-config
-    valgrind
-    ccache
 
     dotnet-runtime
 
@@ -282,19 +250,23 @@ in
     nil
 
     nix-ld
-    wireshark
-
-    mpd-mpris
-
-    libva
-    libva-utils
 
     gemini-cli
 
     graalvmPackages.graalvm-oracle
     dia
+
+    pinentry-tty
   ];
 
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-tty;
+  };
+
+  programs.ssh.startAgent = true;
+  
   virtualisation.docker.enable = true;
 
   programs.nix-ld.enable = true;
