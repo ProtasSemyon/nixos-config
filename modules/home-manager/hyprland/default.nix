@@ -253,26 +253,26 @@ in
           ", XF86AudioPrev, exec, playerctl previous"
         ];
 
-        windowrulev2 = [
+        windowrule = [
           #Blueman
-          "float, class:^(\.blueman.*)$"
-          "move 65% 5%, class:^(\.blueman.*)$"
-          "size <500 200, class:^(\.blueman.*)$"
+          "match:class ^(\.blueman.*)$, float on"
+          "match:class ^(\.blueman.*)$, move 65% 5%"
+          "match:class ^(\.blueman.*)$, size <500 200"
 
           #YandexMusic
-          "float, class:^(yandex-music)$"
-          "size 65% 65%, class:^(yandex-music)$"
+          "match:class ^(yandex-music)$, float on"
+          "match:class ^(yandex-music)$, size 65% 65%"
 
-          "suppressevent maximize, class:.*"
-          "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+          "match:class .*, suppress_event maximize"
+          "match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0, no_initial_focus on"
 
-          "bordercolor rgb(ff5555),xwayland:1"
+          "match:xwayland 1, border_color rgb(ff5555)"
 
           #Foot opacity
-          "opacity 0.93,class:^(foot)$"
+          "match:class ^(foot)$, opacity 0.93"
 
           #Flutter build
-          "float, class:^(com\.example\..+)$"
+          "match:class ^(com\.example\..+)$, float on"
         ];
 
         exec-once = [
