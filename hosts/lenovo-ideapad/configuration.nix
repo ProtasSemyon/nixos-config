@@ -19,26 +19,25 @@ in
     nix-conf.boot
     nix-conf.programs.steam
     nix-conf.programs.thunar
-    
+    nix-conf.power
+
     nix-conf.services.pipewire
 
     hm.hyprland
     hm.waybar
+    hm.kanshi
     hm.fish
     hm.foot
     hm.git
     hm.vscode
-  ];
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "ciscoPacketTracer8-8.2.2"
   ];
 
   distro-grub-themes = {
     enable = true;
     theme = "nixos";
   };
-  
+
   #TODO: move to postgresql.nix
   services.postgresql = {
     enable = true;
@@ -70,19 +69,18 @@ in
   networking.firewall.checkReversePath = "loose";
 
   #TODO: move to obs-studio
-  programs.obs-studio = {
-    enable = true;
-    plugins = with pkgs.obs-studio-plugins; [
-      wlrobs
-      obs-backgroundremoval
-      obs-pipewire-audio-capture
-      obs-vaapi
-      obs-gstreamer
-      obs-vkcapture
-    ];
-  };
-  
-  
+  # programs.obs-studio = {
+  #   enable = true;
+  #   plugins = with pkgs.obs-studio-plugins; [
+  #     wlrobs
+  #     obs-backgroundremoval
+  #     obs-pipewire-audio-capture
+  #     obs-vaapi
+  #     obs-gstreamer
+  #     obs-vkcapture
+  #   ];
+  # };
+
   swapDevices = [
     {
       device = "/var/lib/swapfile";
@@ -137,8 +135,8 @@ in
     "w /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode - - - - 1"
   ];
 
-  programs.wireshark.enable = true;
-  programs.wireshark.dumpcap.enable = true;
+  # programs.wireshark.enable = true;
+  # programs.wireshark.dumpcap.enable = true;
 
   programs.direnv.enable = true;
   programs.direnv.enableFishIntegration = true;
@@ -213,6 +211,7 @@ in
   # List packages installed in system ple. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    appimage-run
     android-studio
     android-tools
     vim
@@ -224,8 +223,6 @@ in
     pipewire
     wireplumber
     pamixer
-
-    obsidian
 
     #Nix stuff
     nix-prefetch-github
@@ -239,10 +236,8 @@ in
     slack
 
     docker-compose
-    #jetbrains-toolbox
 
     wireguard-tools
-    zed-editor
 
     volantes-cursors
 
@@ -251,22 +246,24 @@ in
 
     nix-ld
 
-    gemini-cli
-
     graalvmPackages.graalvm-oracle
-    dia
 
-    pinentry-tty
+    pinentry-gtk2
+    toybox
+
+    libva
+    libva-utils
+
+    clang
   ];
 
   services.pcscd.enable = true;
   programs.gnupg.agent = {
     enable = true;
-    pinentryPackage = pkgs.pinentry-tty;
+    enableSSHSupport = true;
+    pinentryPackage = pkgs.pinentry-gtk2;
   };
 
-  programs.ssh.startAgent = true;
-  
   virtualisation.docker.enable = true;
 
   programs.nix-ld.enable = true;
@@ -320,6 +317,13 @@ in
       enableBookConversion = true;
       calibreLibrary = "/home/smn/Calibre";
     };
+  };
+
+  networking.nat = {
+    enable = true;
+    enableIPv6 = true;
+    externalInterface = "eth0";
+    internalInterfaces = [ "wg0" ];
   };
 
   networking.networkmanager.unmanaged = [ config.services.tailscale.interfaceName ];

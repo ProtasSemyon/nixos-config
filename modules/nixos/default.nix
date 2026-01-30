@@ -4,4 +4,5 @@
   edid = import ./edid;
   services = import ./services;
   desktop = import ./desktop;
+  power = import ./power;
 }

@@ -5,4 +5,6 @@
   vscode = import ./vscode.nix;
   hyprland = import ./hyprland;
   waybar = import ./waybar.nix;
+  kanshi = import ./kanshi.nix;
+  sirus = import ./sirus.nix;
 }

@@ -1,4 +1,9 @@
-{  pkgs, inputs, self, ... }:
+{
+  pkgs,
+  inputs,
+  self,
+  ...
+}:
 
 {
   home.username = "smn";
@@ -17,28 +22,30 @@
     discord
     logseq
     vlc
-    
-    #Gaming
-    (lutris.override {
-      extraLibraries =  pkgs: [
-        # List library dependencies here
-      ];
-    })
-    
-    winetricks
-    
-    wineWowPackages.waylandFull
-    
+
     (yandex-music.override {
-        trayEnabled = true;     # Whenether to enable tray support
-        electronArguments = ""; # Extra arguments to electron executable
+      trayEnabled = true; # Whenether to enable tray support
+      electronArguments = ""; # Extra arguments to electron executable
     })
 
-    appimage-run
     prismlauncher
     xclicker
-    
+
     self.packages.${stdenv.hostPlatform.system}.neovim
+
+    (callPackage hm.sirus { })
+
+    dbeaver-bin
+
+    insomnia
+    postman
+
+    gemini-cli
+
+    zed-editor
+    jetbrains-toolbox
+
+    obsidian
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -101,8 +108,13 @@
     NIXOS_OZONE_WL = "1";
     GOOGLE_CLOUD_PROJECT = "glass-chimera-478707-f5";
     GOOGLE_CLOUD_PROJECT_ID = "glass-chimera-478707-f5";
+
+    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_X11_EGL = "1";
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+    LIBVA_DRIVER_NAME = "radeonsi";
   };
-  
+
   home.pointerCursor = {
     name = "volantes_light_cursors";
     size = 24;
@@ -115,7 +127,7 @@
     hyprcursor.enable = true;
     sway.enable = true;
   };
-  
+
   gtk = {
     enable = true;
     theme = {
@@ -128,7 +140,7 @@
       accent = "sapphire";
     };
   };
-  
+
   qt = {
     enable = true;
     platformTheme.name = "gtk";
