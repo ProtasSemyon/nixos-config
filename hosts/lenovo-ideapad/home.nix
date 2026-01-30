@@ -33,8 +33,6 @@
 
     self.packages.${stdenv.hostPlatform.system}.neovim
 
-    (callPackage hm.sirus { })
-
     dbeaver-bin
 
     insomnia

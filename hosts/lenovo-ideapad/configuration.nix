@@ -255,6 +255,9 @@ in
     libva-utils
 
     clang
+
+    (callPackage hm.sirus { })
+
   ];
 
   services.pcscd.enable = true;
