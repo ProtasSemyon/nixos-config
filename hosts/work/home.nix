@@ -28,7 +28,6 @@
       electronArguments = ""; # Extra arguments to electron executable
     })
 
-    prismlauncher
     xclicker
 
     self.packages.${stdenv.hostPlatform.system}.neovim

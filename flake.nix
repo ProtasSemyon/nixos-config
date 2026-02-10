@@ -81,5 +81,21 @@
           inputs.distro-grub-themes.nixosModules.${system}.default
         ];
       };
+      
+      nixosConfigurations.work = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          inherit system;
+          inherit self;
+        };
+        modules = [
+          ./hosts/work/configuration.nix
+          inputs.zen-browser.nixosModules.zen-browser
+          inputs.home-manager.nixosModules.default
+          inputs.nix-gc-env.nixosModules.default
+          inputs.nix-index-database.nixosModules.nix-index
+          inputs.distro-grub-themes.nixosModules.${system}.default
+        ];
+      };
     };
 }
