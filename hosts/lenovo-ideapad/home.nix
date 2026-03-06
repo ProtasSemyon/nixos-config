@@ -16,7 +16,7 @@
   # environment.
   home.packages = with pkgs; [
     libreoffice
-    neofetch
+    fastfetch
     neohtop
     telegram-desktop
     discord
@@ -45,7 +45,7 @@
 
     obsidian
     
-    wineWowPackages.waylandFull
+    wineWow64Packages.waylandFull
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

@@ -13,7 +13,7 @@
           }
           {
             criteria = "eDP-1";
-            status = "disable";
+            status = "enable";
             mode = "2880x1800@120Hz";
             position = "0,1200";
             scale = 2.0;
