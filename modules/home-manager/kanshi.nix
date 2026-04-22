@@ -22,14 +22,17 @@
         home-workstation.outputs = [
           {
             criteria = "eDP-1";
-            status = "disable";
+            status = "enable";
+            mode = "2880x1800@120Hz";
+            position = "0,0";
+            scale = 2.0;
           }
           {
             criteria = "Dell Inc. DELL P2418D MY3ND93M0GXT";
             status = "enable";
-            mode = "2560x1440@59.95Hz";
+            mode = "2560x1440@60.00Hz";
             position = "1440,0";
-            scale = 1.0;
+            scale = 1.333333;
           }
         ];
         undocked.outputs = [

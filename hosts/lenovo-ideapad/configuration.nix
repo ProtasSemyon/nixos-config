@@ -213,7 +213,8 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     lm_sensors
-    
+    fzf
+    valgrind
     appimage-run
     android-studio
     android-tools
@@ -252,6 +253,7 @@ in
     graalvmPackages.graalvm-oracle
 
     pinentry-gtk2
+    pinentry-rofi
     toybox
 
     libva
@@ -261,13 +263,15 @@ in
 
     (callPackage hm.sirus { })
 
+    
+    code-cursor
   ];
 
   services.pcscd.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-gtk2;
+    pinentryPackage = pkgs.pinentry-rofi;
   };
 
   virtualisation.docker.enable = true;
