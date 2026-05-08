@@ -1,7 +1,6 @@
 {
   pkgs,
   inputs,
-  system,
   ...
 }:
 let
@@ -78,7 +77,7 @@ in
 
       libnotify
 
-      inputs.hyprland-guiutils.packages."${stdenv.hostPlatform.system}".default
+      inputs.hyprland-guiutils.packages.${stdenv.hostPlatform.system}.default
     ];
 
     wayland.windowManager.hyprland = {

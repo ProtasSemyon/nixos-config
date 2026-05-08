@@ -30,7 +30,7 @@ in
     hm.foot
     hm.git
     hm.vscode
-
+    hm.ssh
   ];
 
   distro-grub-themes = {
@@ -265,6 +265,8 @@ in
 
     
     code-cursor
+    
+    kdePackages.isoimagewriter
   ];
 
   services.pcscd.enable = true;
@@ -369,5 +371,5 @@ in
 
   hardware.enableRedistributableFirmware = true;
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }

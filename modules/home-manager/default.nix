@@ -7,4 +7,5 @@
   waybar = import ./waybar.nix;
   kanshi = import ./kanshi.nix;
   sirus = import ./sirus.nix;
+  ssh = import ./ssh.nix;
 }
