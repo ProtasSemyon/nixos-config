@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }:
 let
@@ -82,213 +83,208 @@ in
 
     wayland.windowManager.hyprland = {
       enable = true;
-
       package = null;
       portalPackage = null;
-
-      settings = {
-        "$mainMod" = "SUPER";
-        "$shiftMod" = "SHIFT";
-        "$terminal" = "foot";
-        "$fileManager" = "thunar";
-        "$menu" = "rofi -show drun -show-icons";
-
-        input = {
-          kb_layout = "us,ru";
-          kb_options = "grp:caps_toggle,grp_led:caps";
-          touchpad = {
-            natural_scroll = true;
-          };
-        };
-
-        gesture = [
-          "3, horizontal, workspace"
-          "3, vertical, mod: ALT, close"
-          "4, vertical, fullscreen"
-          "3, vertical, special, magic"
-        ];
-
-        monitor = [
-          "eDP-1, 2880x1800@120, auto, auto"
-        ];
-
-        general = {
-          gaps_in = 5;
-          gaps_out = 2;
-
-          resize_on_border = true;
-          layout = "dwindle";
-
-          "col.active_border" = "rgba(2FBF71cc) rgba(75D6FFcc) 90deg";
-          "col.inactive_border" = "rgba(1C3A2Baa)";
-
-          "col.nogroup_border" = "rgba(10281Fcc)";
-          "col.nogroup_border_active" = "rgba(75D6FFaa) rgba(2FBF71aa) 90deg";
-
-          border_size = 1;
-        };
-
-        decoration = {
-          rounding = 5;
-          active_opacity = 1.0;
-          inactive_opacity = 0.93;
-          fullscreen_opacity = 1.0;
-
-          shadow = {
-            enabled = true;
-          };
-        };
-
-        dwindle = {
-          pseudotile = true;
-          preserve_split = true;
-        };
-
-        misc = {
-          vfr = false;
-          vrr = 0;
-          force_default_wallpaper = -1;
-          disable_hyprland_logo = true;
-        };
-
-        master = {
-          new_status = "master";
-        };
-
-        animations = {
-          enabled = "yes, please :)";
-
-          bezier = [
-            "easeOutQuint,0.23,1,0.32,1"
-            "easeInOutCubic,0.65,0.05,0.36,1"
-            "linear,0,0,1,1"
-            "almostLinear,0.5,0.5,0.75,1.0"
-            "quick,0.15,0,0.1,1"
-          ];
-
-          animation = [
-            "global, 1, 5, default"
-            "border, 1, 2.5, easeOutQuint"
-            "windows, 1, 2.4, easeOutQuint"
-            "windowsIn, 1, 2, easeOutQuint, popin 87%"
-            "windowsOut, 1, 0.75, linear, popin 87%"
-            "fadeIn, 1, 0.9, almostLinear"
-            "fadeOut, 1, 0.8, almostLinear"
-            "fade, 1, 1.5, quick"
-            "layers, 1, 1.9, easeOutQuint"
-            "layersIn, 1, 2, easeOutQuint, fade"
-            "layersOut, 1, 0.75, linear, fade"
-            "fadeLayersIn, 1, 0.9, almostLinear"
-            "fadeLayersOut, 1, 0.7, almostLinear"
-            "workspaces, 1, 1, almostLinear, fade"
-            "workspacesIn, 1, 0.6, almostLinear, fade"
-            "workspacesOut, 1, 1, almostLinear, fade"
-          ];
-        };
-
-        bind = [
-          "$mainMod, RETURN, exec, $terminal"
-          "$mainMod, C, killactive,"
-          "$mainMod, M, exit,"
-          "$mainMod, E, exec, $fileManager"
-          "$mainMod, V, togglefloating,"
-          "$mainMod, R, exec, $menu"
-          "$mainMod, P, pseudo," # dwindle
-          "$mainMod, J, togglesplit," # dwindle
-
-          # Move focus with mainMod + arrow keys
-          "$mainMod, left, movefocus, l"
-          "$mainMod, right, movefocus, r"
-          "$mainMod, up, movefocus, u"
-          "$mainMod, down, movefocus, d"
-
-          "$mainMod, S, togglespecialworkspace, magic"
-          "$mainMod SHIFT, S, movetoworkspace, special:magic"
-
-          "$mainMod, A, togglespecialworkspace, cookies"
-          "$mainMod SHIFT, A, movetoworkspace, special:cookies"
-
-          "$mainMod, mouse_down, workspace, e+1"
-          "$mainMod, mouse_up, workspace, e-1"
-
-          "$mainMod, P, exec, hyprshot -zm window"
-          "ALT, P, exec, hyprshot -zm region"
-        ]
-        ++ (
-          # workspaces
-          # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
-          builtins.concatLists (
-            builtins.genList (
-              i:
-              let
-                ws = i + 1;
-              in
-              [
-                "$mainMod, code:1${toString i}, workspace, ${toString ws}"
-                "$mainMod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
-              ]
-            ) 9
-          )
-        );
-
-        bindm = [
-          "$mainMod, mouse:272, movewindow"
-          "$mainMod, mouse:273, resizewindow"
-        ];
-
-        bindel = [
-          ",XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-          ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-          ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-          ",XF86MonBrightnessUp, exec, brightnessctl s 10%+"
-          ",XF86MonBrightnessDown, exec, brightnessctl s 10%-"
-        ];
-
-        bindl = [
-          ", XF86AudioNext, exec, playerctl next"
-          ", XF86AudioPause, exec, playerctl play-pause"
-          ", XF86AudioPlay, exec, playerctl play-pause"
-          ", XF86AudioPrev, exec, playerctl previous"
-        ];
-
-        windowrule = [
-          #Blueman
-          "match:class ^(\.blueman.*)$, float on"
-          "match:class ^(\.blueman.*)$, move 65% 5%"
-          "match:class ^(\.blueman.*)$, size <500 200"
-
-          #YandexMusic
-          "match:class ^(yandex-music)$, float on"
-          "match:class ^(yandex-music)$, size 65% 65%"
-
-          "match:class .*, suppress_event maximize"
-          "match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0, no_initial_focus on"
-
-          "match:xwayland 1, border_color rgb(ff5555)"
-
-          #Foot opacity
-          "match:class ^(foot)$, opacity 0.93"
-
-          #Flutter build
-          "match:class ^(com\.example\..+)$, float on"
-        ];
-
-        exec-once = [
-          "waybar"
-          "nm-applet --indicator"
-          "[workspace 1 silent] zen"
-          "[workspace special:magic silent] Telegram"
-
-        ];
-
-        group = {
-          groupbar = {
-            "col.active" = "rgba(2FBF71bb) rgba(75D6FFbb) 90deg";
-            "col.inactive" = "rgba(10281Fcc)";
-          };
-        };
-      };
+      extraConfig = "-- Lua config is handled via xdg.configFile";
     };
+
+    xdg.configFile."hypr/hyprland.lua".text = ''
+      local mainMod = "SUPER"
+      local terminal = "foot"
+      local fileManager = "thunar"
+      local menu = "rofi -show drun -show-icons"
+
+      hl.monitor({
+          output   = "eDP-1",
+          mode     = "2880x1800@120",
+          position = "auto",
+          scale    = "auto",
+      })
+
+      hl.config({
+          general = {
+              gaps_in  = 5,
+              gaps_out = 2,
+              border_size = 1,
+              col = {
+                  active_border   = { colors = {"rgba(2FBF71cc)", "rgba(75D6FFcc)"}, angle = 90 },
+                  inactive_border = "rgba(1C3A2Baa)",
+              },
+              resize_on_border = true,
+              layout = "dwindle",
+          },
+          decoration = {
+              rounding = 5,
+              active_opacity   = 1.0,
+              inactive_opacity = 0.93,
+              shadow = {
+                  enabled = true,
+              },
+          },
+          dwindle = {
+              preserve_split = true,
+          },
+          misc = {
+              force_default_wallpaper = -1,
+              disable_hyprland_logo = true,
+          },
+          master = {
+              new_status = "master",
+          },
+          input = {
+              kb_layout  = "us,ru",
+              kb_options = "grp:caps_toggle,grp_led:caps",
+              follow_mouse = 1,
+              touchpad = {
+                  natural_scroll = true,
+              },
+          },
+          group = {
+              groupbar = {
+                  col = {
+                      active   = { colors = {"rgba(2FBF71bb)", "rgba(75D6FFbb)"}, angle = 90 },
+                      inactive = "rgba(10281Fcc)",
+                  },
+              },
+          },
+      })
+
+      hl.curve("easeOutQuint",   { type = "bezier", points = { {0.23, 1},    {0.32, 1}    } })
+      hl.curve("easeInOutCubic", { type = "bezier", points = { {0.65, 0.05}, {0.36, 1}    } })
+      hl.curve("linear",         { type = "bezier", points = { {0, 0},       {1, 1}       } })
+      hl.curve("almostLinear",   { type = "bezier", points = { {0.5, 0.5},   {0.75, 1}    } })
+      hl.curve("quick",          { type = "bezier", points = { {0.15, 0},    {0.1, 1}     } })
+
+      hl.animation({ leaf = "global",        enabled = true,  speed = 5,    bezier = "default" })
+      hl.animation({ leaf = "border",        enabled = true,  speed = 2.5,  bezier = "easeOutQuint" })
+      hl.animation({ leaf = "windows",       enabled = true,  speed = 2.4,  bezier = "easeOutQuint" })
+      hl.animation({ leaf = "windowsIn",     enabled = true,  speed = 2,    bezier = "easeOutQuint", style = "popin 87%" })
+      hl.animation({ leaf = "windowsOut",    enabled = true,  speed = 0.75, bezier = "linear",       style = "popin 87%" })
+      hl.animation({ leaf = "fadeIn",        enabled = true,  speed = 0.9,  bezier = "almostLinear" })
+      hl.animation({ leaf = "fadeOut",       enabled = true,  speed = 0.8,  bezier = "almostLinear" })
+      hl.animation({ leaf = "fade",          enabled = true,  speed = 1.5,  bezier = "quick" })
+      hl.animation({ leaf = "layers",        enabled = true,  speed = 1.9,  bezier = "easeOutQuint" })
+      hl.animation({ leaf = "layersIn",      enabled = true,  speed = 2,    bezier = "easeOutQuint", style = "fade" })
+      hl.animation({ leaf = "layersOut",     enabled = true,  speed = 0.75, bezier = "linear",       style = "fade" })
+      hl.animation({ leaf = "fadeLayersIn",  enabled = true,  speed = 0.9,  bezier = "almostLinear" })
+      hl.animation({ leaf = "fadeLayersOut", enabled = true,  speed = 0.7,  bezier = "almostLinear" })
+      hl.animation({ leaf = "workspaces",    enabled = true,  speed = 1,    bezier = "almostLinear", style = "fade" })
+      hl.animation({ leaf = "workspacesIn",  enabled = true,  speed = 0.6,  bezier = "almostLinear", style = "fade" })
+      hl.animation({ leaf = "workspacesOut", enabled = true,  speed = 1,    bezier = "almostLinear", style = "fade" })
+
+      hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
+      hl.gesture({ fingers = 3, direction = "vertical",   mods = "ALT", action = "close" })
+      hl.gesture({ fingers = 4, direction = "vertical",   action = "fullscreen" })
+      hl.gesture({ fingers = 3, direction = "vertical",   action = "special", workspace_name = "magic" })
+
+      -- Binds
+      hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
+      hl.bind(mainMod .. " + C",      hl.dsp.window.close())
+      hl.bind(mainMod .. " + M",      hl.dsp.exit())
+      hl.bind(mainMod .. " + E",      hl.dsp.exec_cmd(fileManager))
+      hl.bind(mainMod .. " + V",      hl.dsp.window.float({ action = "toggle" }))
+      hl.bind(mainMod .. " + R",      hl.dsp.exec_cmd(menu))
+      hl.bind(mainMod .. " + P",      hl.dsp.window.pseudo())
+      hl.bind(mainMod .. " + J",      hl.dsp.layout("togglesplit"))
+
+      hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
+      hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
+      hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
+      hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
+
+      hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
+      hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+
+      hl.bind(mainMod .. " + A",         hl.dsp.workspace.toggle_special("cookies"))
+      hl.bind(mainMod .. " + SHIFT + A", hl.dsp.window.move({ workspace = "special:cookies" }))
+
+      hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
+      hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
+
+      hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprshot -zm window"))
+      hl.bind("ALT + P",         hl.dsp.exec_cmd("hyprshot -zm region"))
+
+      for i = 0, 8 do
+          local ws = i + 1
+          hl.bind(mainMod .. " + code:1" .. i,             hl.dsp.focus({ workspace = ws}))
+          hl.bind(mainMod .. " + SHIFT + code:1" .. i,     hl.dsp.window.move({ workspace = ws }))
+      end
+
+      hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
+      hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+
+      hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
+      hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true, repeating = true })
+      hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, repeating = true })
+      hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true })
+      hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl s 10%+"), { locked = true, repeating = true })
+      hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl s 10%-"), { locked = true, repeating = true })
+
+      hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
+      hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+      hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+      hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+
+      -- Window Rules
+      hl.window_rule({
+          name  = "blueman-float",
+          match = { class = [[^(\.blueman.*)$]] },
+          float = true,
+          move  = "65% 5%",
+          size  = "<500 200",
+      })
+
+      hl.window_rule({
+          name  = "yandex-music-float",
+          match = { class = "^(yandex-music)$" },
+          float = true,
+          size  = "65% 65%",
+      })
+
+      hl.window_rule({
+          name  = "suppress-maximize",
+          match = { class = ".*" },
+          suppress_event = "maximize",
+      })
+
+      hl.window_rule({
+          name  = "fix-xwayland-drags",
+          match = {
+              class      = "^$",
+              title      = "^$",
+              xwayland   = true,
+              float      = true,
+              fullscreen = false,
+              pin        = false,
+          },
+          no_focus = true,
+      })
+
+      hl.window_rule({
+          name  = "xwayland-border",
+          match = { xwayland = true },
+          border_color = "rgb(ff5555)",
+      })
+
+      hl.window_rule({
+          name  = "foot-opacity",
+          match = { class = "^(foot)$" },
+          opacity = 0.93,
+      })
+
+      hl.window_rule({
+          name  = "flutter-float",
+          match = { class = [[^(com\.example\..+)$]] },
+          float = true,
+      })
+
+      -- Autostart
+      hl.on("hyprland.start", function () 
+        hl.exec_cmd("waybar")
+        hl.exec_cmd("nm-applet --indicator")
+        hl.exec_cmd("[workspace 1 silent] zen")
+        hl.exec_cmd("[workspace special:magic silent] Telegram")
+      end)
+    '';
   };
 }

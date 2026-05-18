@@ -29,7 +29,6 @@ in
     hm.fish
     hm.foot
     hm.git
-    hm.vscode
     hm.ssh
   ];
 
@@ -39,26 +38,26 @@ in
   };
 
   #TODO: move to postgresql.nix
-  services.postgresql = {
-    enable = true;
-    enableTCPIP = true;
-    authentication = ''
-      host all all 0.0.0.0/0 trust
-    '';
-    initialScript = pkgs.writeText "initial.sql" ''
-      CREATE USER smn WITH PASSWORD 'password';
-      CREATE DATABASE booker OWNER smn;
-    '';
-  };
+  # services.postgresql = {
+  #   enable = true;
+  #   enableTCPIP = true;
+  #   authentication = ''
+  #     host all all 0.0.0.0/0 trust
+  #   '';
+  #   initialScript = pkgs.writeText "initial.sql" ''
+  #     CREATE USER smn WITH PASSWORD 'password';
+  #     CREATE DATABASE booker OWNER smn;
+  #   '';
+  # };
 
   #TODO: move to postgresql.nix
-  services.pgadmin = {
-    enable = true;
-    initialEmail = "foo@bar.com";
-    initialPasswordFile = pkgs.writeText "pgadminPW" ''
-      password
-    '';
-  };
+  # services.pgadmin = {
+  #   enable = true;
+  #   initialEmail = "foo@bar.com";
+  #   initialPasswordFile = pkgs.writeText "pgadminPW" ''
+  #     password
+  #   '';
+  # };
 
   networking.hostName = "saymoon";
   networking.networkmanager.enable = true;
@@ -130,14 +129,6 @@ in
   };
 
   programs.firefox.enable = true;
-  #programs.zen-browser.enable = true;
-
-  systemd.tmpfiles.rules = [
-    "w /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode - - - - 1"
-  ];
-
-  # programs.wireshark.enable = true;
-  # programs.wireshark.dumpcap.enable = true;
 
   programs.direnv.enable = true;
   programs.direnv.enableFishIntegration = true;
@@ -167,22 +158,9 @@ in
 
   services.blueman.enable = true;
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  # Enable CUPS to print documents.
   services.printing.enable = true;
-
-  # Enable sound.
-
-  # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.smn = {
     isNormalUser = true;
     extraGroups = [
@@ -194,6 +172,13 @@ in
       "wireshark"
     ];
   };
+
+  users.groups.netdev = { };
+  users.users.pulse = {
+    isSystemUser = true;
+    group = "pulse";
+  };
+  users.groups.pulse = { };
 
   home-manager = {
     extraSpecialArgs = {
@@ -216,14 +201,11 @@ in
     fzf
     valgrind
     appimage-run
-    android-studio
-    android-tools
     vim
     wget
     btop
     mesa
     vulkan-tools
-    pulseaudioFull
     pipewire
     wireplumber
     pamixer
@@ -234,8 +216,6 @@ in
     #Theme
     sddm-astronaut
     catppuccin-sddm
-
-    dotnet-runtime
 
     slack
 
@@ -253,17 +233,12 @@ in
     graalvmPackages.graalvm-oracle
 
     pinentry-gtk2
-    pinentry-rofi
     toybox
 
     libva
     libva-utils
 
     clang
-
-    #(callPackage hm.sirus { })
-
-    kdePackages.isoimagewriter
     sshfs
 
     inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
@@ -295,16 +270,16 @@ in
 
   services.openssh.enable = true;
 
-  services.avahi = {
-    enable = true;
-    publish = {
-      enable = true;
-      addresses = true;
-      workstation = true;
-    };
-    nssmdns4 = true;
-    openFirewall = true;
-  };
+  # services.avahi = {
+  #   enable = true;
+  #   publish = {
+  #     enable = true;
+  #     addresses = true;
+  #     workstation = true;
+  #   };
+  #   nssmdns4 = true;
+  #   openFirewall = true;
+  # };
 
   services.tailscale = {
     enable = true;
@@ -312,24 +287,24 @@ in
     useRoutingFeatures = "both";
   };
 
-  services.cloudflare-warp = {
-    enable = true;
-    # Warp CLI
-    package = pkgs.cloudflare-warp;
-  };
+  # services.cloudflare-warp = {
+  #   enable = true;
+  #   # Warp CLI
+  #   package = pkgs.cloudflare-warp;
+  # };
 
-  # Calibre-Web
-  services.calibre-web = {
-    user = "smn";
-    enable = true;
-    listen.ip = "0.0.0.0";
-    listen.port = 8081;
-    options = {
-      enableBookUploading = true;
-      enableBookConversion = true;
-      calibreLibrary = "/home/smn/Calibre";
-    };
-  };
+  # # Calibre-Web
+  # services.calibre-web = {
+  #   user = "smn";
+  #   enable = true;
+  #   listen.ip = "0.0.0.0";
+  #   listen.port = 8081;
+  #   options = {
+  #     enableBookUploading = true;
+  #     enableBookConversion = true;
+  #     calibreLibrary = "/home/smn/Calibre";
+  #   };
+  # };
 
   networking.nat = {
     enable = true;

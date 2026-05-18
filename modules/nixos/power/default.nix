@@ -39,6 +39,10 @@
 
       # USB Autosuspend - This helps with the 'keyd' and USB wakeups
       USB_AUTOSUSPEND = 1;
+
+      # Battery charge thresholds for IdeaPad (Conservation Mode)
+      # 1 = enabled (stops charging at 60%), 0 = disabled
+      STOP_CHARGE_THRESH_BAT0 = 1;
     };
   };
 
