@@ -1,14 +1,16 @@
 { ... }:
 
 {
-  home-manager.users.smn = { pkgs, ... } : {
-    programs.vscode = {
-      enable = true;
-      profiles.default = {
-        enableUpdateCheck = true;
-        enableExtensionUpdateCheck = true;
+  home-manager.users.smn =
+    { pkgs, ... }:
+    {
+      programs.vscode = {
+        enable = false;
+        profiles.default = {
+          enableUpdateCheck = false;
+          enableExtensionUpdateCheck = true;
+        };
+        package = pkgs.vscode;
       };
-      package = pkgs.vscode;
-    }; 
-  };
+    };
 }

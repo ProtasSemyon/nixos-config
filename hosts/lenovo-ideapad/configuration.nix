@@ -130,7 +130,7 @@ in
   };
 
   programs.firefox.enable = true;
-  programs.zen-browser.enable = true;
+  #programs.zen-browser.enable = true;
 
   systemd.tmpfiles.rules = [
     "w /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode - - - - 1"
@@ -261,12 +261,12 @@ in
 
     clang
 
-    (callPackage hm.sirus { })
+    #(callPackage hm.sirus { })
 
-    
-    code-cursor
-    
     kdePackages.isoimagewriter
+    sshfs
+
+    inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
   ];
 
   services.pcscd.enable = true;

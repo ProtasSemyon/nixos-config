@@ -11,7 +11,7 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     zen-browser = {
-      url = "github:LunaCOLON3/zen-browser-nix";
+      url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-gc-env.url = "github:Julow/nix-gc-env";
@@ -73,7 +73,6 @@
         };
         modules = [
           ./hosts/lenovo-ideapad/configuration.nix
-          inputs.zen-browser.nixosModules.zen-browser
           inputs.home-manager.nixosModules.default
           inputs.nixos-hardware.nixosModules.lenovo-ideapad-slim-5
           inputs.nix-gc-env.nixosModules.default
@@ -81,7 +80,7 @@
           inputs.distro-grub-themes.nixosModules.${system}.default
         ];
       };
-      
+
       nixosConfigurations.work = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
@@ -90,7 +89,6 @@
         };
         modules = [
           ./hosts/work/configuration.nix
-          inputs.zen-browser.nixosModules.zen-browser
           inputs.home-manager.nixosModules.default
           inputs.nix-gc-env.nixosModules.default
           inputs.nix-index-database.nixosModules.nix-index
