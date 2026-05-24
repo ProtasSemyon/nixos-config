@@ -1,11 +1,29 @@
 {
   pkgs,
   inputs,
-  lib,
   ...
 }:
 let
   hyprpaper = ./hyprpaper;
+
+  toggleHomeLayout = pkgs.writeShellScriptBin "toggle-home-layout" ''
+    STATE_FILE="/tmp/home_monitor_layout.state"
+
+    if [ ! -f "$STATE_FILE" ] || [ "$(cat "$STATE_FILE")" = "side" ]; then
+        ${pkgs.systemd}/bin/systemctl --user stop kanshi.service
+        sleep 0.5
+
+        ${pkgs.hyprland}/bin/hyprctl eval 'hl.monitor({ output = "DP-2", mode = "2560x1440@59.95100", position = "0x0", scale = "1.333333" })'
+        ${pkgs.hyprland}/bin/hyprctl eval 'hl.monitor({ output = "eDP-1", mode = "2880x1800@120", position = "0x1080", scale = "2" })'
+
+        echo "stacked" > "$STATE_FILE"
+        ${pkgs.libnotify}/bin/notify-send "Мониторы" "Режим: Вертикально"
+    else
+        ${pkgs.systemd}/bin/systemctl --user start kanshi.service
+        echo "side" > "$STATE_FILE"
+        ${pkgs.libnotify}/bin/notify-send "Мониторы" "Режим: Горизонтально"
+    fi
+  '';
 in
 {
   imports = [
@@ -55,7 +73,6 @@ in
       };
     };
 
-    services.blueman-applet.enable = true;
     programs.rofi.enable = true;
 
     xdg.portal.extraPortals = [
@@ -79,6 +96,7 @@ in
       libnotify
 
       inputs.hyprland-guiutils.packages.${stdenv.hostPlatform.system}.default
+      toggleHomeLayout
     ];
 
     wayland.windowManager.hyprland = {
@@ -186,6 +204,7 @@ in
       hl.bind(mainMod .. " + R",      hl.dsp.exec_cmd(menu))
       hl.bind(mainMod .. " + P",      hl.dsp.window.pseudo())
       hl.bind(mainMod .. " + J",      hl.dsp.layout("togglesplit"))
+      hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("toggle-home-layout"))
 
       hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
       hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
@@ -279,7 +298,7 @@ in
       })
 
       -- Autostart
-      hl.on("hyprland.start", function () 
+      hl.on("hyprland.start", function ()
         hl.exec_cmd("waybar")
         hl.exec_cmd("nm-applet --indicator")
         hl.exec_cmd("[workspace 1 silent] zen")

@@ -1,12 +1,12 @@
 { config, pkgs, ... }:
 
 {
-  
+
   boot.kernelParams = [
     "amd_pstate=active"
     "amd_pstate.epp=power"
   ];
-  
+
   powerManagement.powertop.enable = true;
 
   services.tlp = {
@@ -38,7 +38,7 @@
       SOUND_POWER_SAVE_ON_BAT = 1;
 
       # USB Autosuspend - This helps with the 'keyd' and USB wakeups
-      USB_AUTOSUSPEND = 1;
+      USB_AUTOSUSPEND = 0;
 
       # Battery charge thresholds for IdeaPad (Conservation Mode)
       # 1 = enabled (stops charging at 60%), 0 = disabled
