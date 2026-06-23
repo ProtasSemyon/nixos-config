@@ -5,7 +5,7 @@
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
+      settings = {
         "office" = {
           hostname = "192.168.5.2";
           user = "saymoon";

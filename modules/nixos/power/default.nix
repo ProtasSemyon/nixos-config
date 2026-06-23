@@ -7,7 +7,7 @@
     "amd_pstate.epp=power"
   ];
 
-  powerManagement.powertop.enable = true;
+  powerManagement.powertop.enable = false;
 
   services.tlp = {
     enable = true;
@@ -34,7 +34,9 @@
       WIFI_PWR_ON_BAT = "on";
 
       # Aggressive Power Management for PCIe and Audio
-      PCIE_ASPM_ON_BAT = "powersave";
+      PCIE_ASPM_ON_AC = "default";
+      PCIE_ASPM_ON_BAT = "default";
+      
       SOUND_POWER_SAVE_ON_BAT = 1;
 
       # USB Autosuspend - This helps with the 'keyd' and USB wakeups

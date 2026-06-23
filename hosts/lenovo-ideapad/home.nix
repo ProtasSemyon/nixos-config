@@ -38,7 +38,7 @@
     insomnia
     postman
 
-    gemini-cli
+    grok-cli
 
     zed-editor
     jetbrains-toolbox
@@ -106,8 +106,8 @@
   #
   home.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    GOOGLE_CLOUD_PROJECT = "glass-chimera-478707-f5";
-    GOOGLE_CLOUD_PROJECT_ID = "glass-chimera-478707-f5";
+    GOOGLE_CLOUD_PROJECT = "clear-backup-483414-t5";
+    GOOGLE_CLOUD_PROJECT_ID = "clear-backup-483414-t5";
 
     MOZ_ENABLE_WAYLAND = "1";
     MOZ_X11_EGL = "1";

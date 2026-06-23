@@ -87,6 +87,7 @@ in
       hyprcursor
       pavucontrol
       networkmanagerapplet
+      blueman
       cliphist
       brightnessctl
 
@@ -301,6 +302,7 @@ in
       hl.on("hyprland.start", function ()
         hl.exec_cmd("waybar")
         hl.exec_cmd("nm-applet --indicator")
+        hl.exec_cmd("blueman-applet")
         hl.exec_cmd("[workspace 1 silent] zen")
         hl.exec_cmd("[workspace special:magic silent] Telegram")
       end)

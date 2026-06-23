@@ -32,6 +32,10 @@ in
     hm.ssh
   ];
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+  ];
+
   distro-grub-themes = {
     enable = true;
     theme = "nixos";
@@ -146,7 +150,6 @@ in
     powerOnBoot = true;
     settings = {
       General = {
-        Enable = "Source,Sink,Media,Socket";
         Experimental = true;
         FastConnectable = true;
       };
@@ -242,6 +245,7 @@ in
     sshfs
 
     inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
+    google-chrome
   ];
 
   services.pcscd.enable = true;
