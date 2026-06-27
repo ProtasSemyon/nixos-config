@@ -1,0 +1,7 @@
+# Disable style-only lints we deliberately keep:
+#   empty_pattern  — `{ ... }:` is the conventional module signature.
+#   repeated_keys  — flat `services.a.enable`/`services.b.enable` is clearer.
+disabled = [
+  "empty_pattern",
+  "repeated_keys",
+]

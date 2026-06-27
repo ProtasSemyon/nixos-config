@@ -1,0 +1,13 @@
+keys:
+  # Host key (derived from /etc/ssh/ssh_host_ed25519_key) — used by sops-nix to
+  # decrypt secrets on the machine at activation.
+  - &saymoon age12x9gqhpyy0xx536a6armykmgm3law9z9aqhqugqf8va75nrspensgzqrv6
+  # Personal key (~/.config/sops/age/keys.txt) — used to edit secrets as the user.
+  - &smn age1tvn70fhytvkz2mp5c7pwfvjmjep5xa6k4r85gkkc5aktp2cqlg9sm40t4z
+
+creation_rules:
+  - path_regex: secrets/.*\.ya?ml$
+    key_groups:
+      - age:
+          - *saymoon
+          - *smn

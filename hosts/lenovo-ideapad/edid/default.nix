@@ -6,8 +6,8 @@ let
     src = ./edid.bin;
     dontUnpack = true;
     installPhase = ''
-        mkdir -p $out/lib/firmware/edid
-        cp $src $out/lib/firmware/edid/edid.bin
+      mkdir -p $out/lib/firmware/edid
+      cp $src $out/lib/firmware/edid/edid.bin
     '';
   };
 in

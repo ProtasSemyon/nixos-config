@@ -52,18 +52,6 @@
         "type": "github"
       }
     },
-    "dotfiles": {
-      "flake": false,
-      "locked": {
-        "path": "./dotfiles",
-        "type": "path"
-      },
-      "original": {
-        "path": "./dotfiles",
-        "type": "path"
-      },
-      "parent": []
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -354,21 +342,6 @@
         "type": "github"
       }
     },
-    "nix-gc-env": {
-      "locked": {
-        "lastModified": 1688934394,
-        "narHash": "sha256-Y72My5Ym2w9jhprmw8kQrom7ObvzqZ3DfNO2r3ZqfOo=",
-        "owner": "Julow",
-        "repo": "nix-gc-env",
-        "rev": "c1e41568772c21a8274ab8edf5d0faadd5df4c8c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Julow",
-        "repo": "nix-gc-env",
-        "type": "github"
-      }
-    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -497,15 +470,34 @@
     "root": {
       "inputs": {
         "distro-grub-themes": "distro-grub-themes",
-        "dotfiles": "dotfiles",
         "home-manager": "home-manager",
         "hyprland-guiutils": "hyprland-guiutils",
-        "nix-gc-env": "nix-gc-env",
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",
         "nvf": "nvf",
+        "sops-nix": "sops-nix",
         "zen-browser": "zen-browser"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782165805,
+        "narHash": "sha256-478kKQBvK6SYTOdN2h9jhKJv94nbXRbFMfuL1WshErg=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "56b24064fdcaedca53553b1a6d607fd23b613a24",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "type": "github"
       }
     },
     "systems": {

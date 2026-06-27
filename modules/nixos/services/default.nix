@@ -1,3 +1,0 @@
-{
-  pipewire = import ./pipewire.nix;
-}

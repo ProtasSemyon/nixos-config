@@ -1,5 +1,5 @@
 {
-  description = "Nixos config flake";
+  description = "NixOS config flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -10,11 +10,11 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-gc-env.url = "github:Julow/nix-gc-env";
 
     nvf = {
       url = "github:notashelf/nvf";
@@ -28,13 +28,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland-guiutils = {
-      url = "github:hyprwm/hyprland-guiutils";
-    };
+    hyprland-guiutils.url = "github:hyprwm/hyprland-guiutils";
 
-    dotfiles = {
-      url = "path:./dotfiles";
-      flake = false;
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -47,52 +45,40 @@
     }@inputs:
     let
       system = "x86_64-linux";
+      username = "smn";
+      pkgs = nixpkgs.legacyPackages.${system};
+      specialArgs = { inherit inputs self username; };
     in
     {
+      formatter.${system} = pkgs.nixfmt;
+
       packages.${system}.neovim =
         (nvf.lib.neovimConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
-          modules = [
-            (
-              { ... }:
-              {
-                _module.args = {
-                  nvim-config = inputs.nvim-config;
-                };
-              }
-            )
-            ./nvf
-          ];
+          inherit pkgs;
+          modules = [ ./nvf ];
         }).neovim;
 
-      nixosConfigurations.saymoon = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          inherit system;
-          inherit self;
-        };
-        modules = [
-          ./hosts/lenovo-ideapad/configuration.nix
-          inputs.home-manager.nixosModules.default
-          inputs.nixos-hardware.nixosModules.lenovo-ideapad-slim-5
-          inputs.nix-gc-env.nixosModules.default
-          inputs.nix-index-database.nixosModules.nix-index
-          inputs.distro-grub-themes.nixosModules.${system}.default
-        ];
+      # `nix flake check` runs these linters over the whole tree.
+      checks.${system} = {
+        statix = pkgs.runCommand "statix-check" { } ''
+          ${pkgs.statix}/bin/statix check -c ${self}/statix.toml ${self}
+          touch $out
+        '';
+        deadnix = pkgs.runCommand "deadnix-check" { } ''
+          ${pkgs.deadnix}/bin/deadnix --fail ${self}
+          touch $out
+        '';
       };
 
-      nixosConfigurations.work = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          inherit system;
-          inherit self;
-        };
+      nixosConfigurations.saymoon = nixpkgs.lib.nixosSystem {
+        inherit specialArgs;
         modules = [
-          ./hosts/work/configuration.nix
+          ./hosts/lenovo-ideapad
           inputs.home-manager.nixosModules.default
-          inputs.nix-gc-env.nixosModules.default
+          inputs.nixos-hardware.nixosModules.lenovo-ideapad-slim-5
           inputs.nix-index-database.nixosModules.nix-index
           inputs.distro-grub-themes.nixosModules.${system}.default
+          inputs.sops-nix.nixosModules.sops
         ];
       };
     };

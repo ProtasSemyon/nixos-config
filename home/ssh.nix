@@ -1,0 +1,15 @@
+{ ... }:
+
+{
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    settings = {
+      "office" = {
+        hostname = "192.168.5.2";
+        user = "saymoon";
+        identityFile = "~/.ssh/home-laptop";
+      };
+    };
+  };
+}
