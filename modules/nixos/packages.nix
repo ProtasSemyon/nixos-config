@@ -31,8 +31,6 @@
 
     docker-compose
 
-    wireguard-tools
-
     volantes-cursors
 
     graalvmPackages.graalvm-oracle
