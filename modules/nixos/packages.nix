@@ -15,6 +15,7 @@
     pipewire
     wireplumber
     pamixer
+    pulseaudio # даёт pactl для просмотра bluez-профилей
 
     # Nix tooling
     nix-prefetch-github
@@ -47,5 +48,9 @@
 
     inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
     google-chrome
+
+    claude-code
+
+    netbird-ui
   ];
 }
