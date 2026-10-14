@@ -90,6 +90,21 @@ button {
     color: #CDE8BE;
 }
 
+/* Notification bell: always visible; muted when idle, sky-blue when unread */
+#custom-notification {
+    font-family: "FiraCode Nerd Font Mono", FiraCode, monospace;
+    padding: 0 10px;
+    background-color: #1C3A2B;
+    color: #CDE8BE; /* Soft leaf — no notifications (inactive) */
+}
+
+#custom-notification.notification,
+#custom-notification.dnd-notification,
+#custom-notification.inhibited-notification,
+#custom-notification.dnd-inhibited-notification {
+    color: #75D6FF; /* Sky blue — unread, gentle attention */
+}
+
 /* Temperature critical */
 #temperature.critical {
     background-color: #E58EB2; /* Rose pink critical */

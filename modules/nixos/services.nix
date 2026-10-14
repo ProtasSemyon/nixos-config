@@ -15,7 +15,7 @@
   services.fwupd.enable = true;
 
   # Cap the systemd journal so logs can't grow without bound.
-  services.journald.extraConfig = "SystemMaxUse=500M";
+  services.journald.settings.Journal.SystemMaxUse = "500M";
 
   services.deluge = {
     enable = true;

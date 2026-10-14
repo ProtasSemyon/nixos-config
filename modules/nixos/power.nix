@@ -29,6 +29,12 @@
       CPU_MIN_PERF_ON_BAT = 10; # never drop below 10%
       CPU_MAX_PERF_ON_BAT = 80; # cap at 80% to save battery
 
+      # Turbo/boost: full range on AC (the APU needs the headroom to feed the
+      # iGPU), off on battery where the extra clocks cost far more than they
+      # return.
+      CPU_BOOST_ON_AC = 1;
+      CPU_BOOST_ON_BAT = 0;
+
       # ACPI platform profile (driven by the ideapad_laptop driver). This lets
       # the EC manage power limits and fan curves alongside amd-pstate.
       # Choices on this laptop: low-power | balanced | performance.

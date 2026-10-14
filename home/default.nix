@@ -3,6 +3,7 @@
 {
   imports = [
     ./packages.nix
+    ./gaming.nix
     ./theme.nix
     ./fish.nix
     ./git.nix

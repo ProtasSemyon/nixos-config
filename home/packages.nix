@@ -31,7 +31,5 @@
     jetbrains-toolbox
 
     obsidian
-
-    wineWow64Packages.waylandFull
   ];
 }

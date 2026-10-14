@@ -4,6 +4,7 @@
   imports = [
     ./hyprpaper.nix
     ./lock.nix
+    ./swaync.nix
   ];
 
   hyprpaper = {
@@ -12,7 +13,6 @@
   };
 
   services.hyprpolkitagent.enable = true;
-  services.dunst.enable = true;
   services.gammastep = {
     enable = true;
 

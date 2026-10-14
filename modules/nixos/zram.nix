@@ -18,8 +18,14 @@
     "vm.page-cluster" = 0;
 
     # zram swap is cheap (compressed RAM), so prefer pushing anonymous pages to
-    # it early instead of evicting the file cache and stalling. 150 is the
+    # it early instead of evicting the file cache and stalling. 150-200 is the
     # common tuning for zram-backed systems (kernel allows up to 200).
-    "vm.swappiness" = 150;
+    "vm.swappiness" = 180;
+
+    # Keep a wider free-memory margin so kswapd reclaims in the background
+    # instead of the allocating task stalling in direct reclaim. The unit is
+    # 1/10000 of a zone, so 200 reserves roughly 2% (~280 MiB here) against
+    # the default 0.1%, which is far too thin for bursty desktop allocations.
+    "vm.watermark_scale_factor" = 200;
   };
 }

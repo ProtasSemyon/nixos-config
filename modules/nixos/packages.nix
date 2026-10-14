@@ -35,7 +35,7 @@
 
     graalvmPackages.graalvm-oracle
 
-    pinentry-gtk2
+    pinentry-gnome3
     toybox
 
     libva
@@ -50,5 +50,6 @@
     claude-code
 
     netbird-ui
+    grpcurl
   ];
 }

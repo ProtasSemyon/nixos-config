@@ -1,7 +1,14 @@
 { pkgs, ... }:
 
 {
-  home.packages = [ pkgs.sccache ];
+  # rustup provides the cargo/rustc/rustup proxies on PATH for every login and
+  # graphical session (home-manager is a NixOS module, so this lands in
+  # /etc/profiles/per-user and is visible to GUI apps like Zed, which compile
+  # Rust extensions themselves). The actual toolchains live in ~/.rustup.
+  home.packages = [
+    pkgs.rustup
+    pkgs.sccache
+  ];
 
   # Route every cargo build through sccache so identical crates (same version,
   # features, flags, toolchain) are compiled once and reused across all

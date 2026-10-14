@@ -25,7 +25,8 @@
     ./pipewire.nix
     ./power.nix
     ./zram.nix
-    ./steam.nix
+    ./gaming.nix
     ./thunar.nix
+    ./obs.nix
   ];
 }
