@@ -26,6 +26,10 @@ modules declare:
   generates the `hl.monitor({...})` calls prepended to the shared
   `hyprland.lua`. Hosts set it from their own `hosts/<host>/home.nix`, which
   also carries the kanshi profiles.
+- `hyprland.autostart` (Home Manager) — same file, generates the
+  `hl.on("hyprland.start", ...)` block appended to the shared `hyprland.lua`.
+  Definitions from several modules concatenate, so the shared module lists what
+  every host runs and a host adds only its own extras.
 
 Vendor-wide but machine-independent pieces go in their own optional module that
 hosts import — see `modules/nixos/amd.nix`. Per-host modules are wired in

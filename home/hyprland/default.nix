@@ -24,6 +24,15 @@ let
   defaultMonitor =
     if config.hyprland.monitors == [ ] then "" else (builtins.head config.hyprland.monitors).output;
 
+  # The `hl.on("hyprland.start", ...)` block, generated from the autostart list
+  # and appended to the shared Lua config below.
+  autostartLua = ''
+    -- Autostart
+    hl.on("hyprland.start", function()
+    ${lib.concatMapStringsSep "\n" (c: "  " + ''hl.exec_cmd("${c}")'') config.hyprland.autostart}
+    end)
+  '';
+
   # `hl.monitor({...})` calls, generated from the host's monitor list and
   # prepended to the shared Lua config below.
   monitorsLua = lib.concatMapStrings (m: ''
@@ -41,6 +50,17 @@ in
     ./lock.nix
     ./swaync.nix
   ];
+
+  options.hyprland.autostart = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [ ];
+    example = [ "[workspace 1 silent] firefox" ];
+    description = ''
+      Commands to run when the Hyprland session starts. Definitions from
+      several modules are concatenated, so a host appends its own without
+      restating the shared ones.
+    '';
+  };
 
   options.hyprland.monitors = lib.mkOption {
     default = [ ];
@@ -79,6 +99,16 @@ in
   };
 
   config = {
+    # Autostart common to every host; hosts append their own entries.
+    hyprland.autostart = [
+      "edp-refresh"
+      "waybar"
+      "nm-applet --indicator"
+      "blueman-applet"
+      "[workspace 1 silent] zen"
+      "[workspace special:magic silent] Telegram"
+    ];
+
     hyprpaper = {
       enable = true;
       wallpaper = "MagicForest.png";
@@ -137,6 +167,7 @@ in
     # still concatenates with the Home Manager module's generated footer — which
     # starts hyprland-session.target and propagates the session environment.
     # The per-host monitor declarations are generated above and prepended.
-    xdg.configFile."hypr/hyprland.lua".text = monitorsLua + "\n" + builtins.readFile ./hyprland.lua;
+    xdg.configFile."hypr/hyprland.lua".text =
+      monitorsLua + "\n" + builtins.readFile ./hyprland.lua + "\n" + autostartLua;
   };
 }
