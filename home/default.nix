@@ -10,6 +10,7 @@
     ./rust.nix
     ./foot.nix
     ./ssh.nix
+    ./syncthing.nix
     ./kanshi.nix
     ./waybar.nix
     ./hyprland

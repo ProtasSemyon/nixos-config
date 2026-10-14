@@ -173,6 +173,25 @@ the label from `lsblk -o NAME,SIZE,FSTYPE,LABEL` and uncomment.
 unset, because the card index is ambiguous on a hybrid machine. If it is worth
 setting, `ls /sys/class/drm` gives the indices and it belongs in the host file.
 
+### 6. Syncthing device IDs
+
+`modules/nixos/syncthing.nix` keeps the Divine Journey 2 Prism instance in step
+between the two laptops, but its `devices` attrset is still empty, so the folder
+is configured and shared with nobody. Fill it in once both machines have run the
+service at least once:
+
+```sh
+syncthing --device-id     # run on each machine
+```
+
+The IDs are public; commit them. Both hosts need both entries — each machine
+identifies itself by its own certificate. After that the folder pairs up on its
+own; accept nothing in the web UI, `overrideDevices`/`overrideFolders` make the
+Nix config authoritative.
+
+First sync is roughly 5 GiB (`minecraft/backups` is excluded by the `.stignore`
+in `home/syncthing.nix`, which is 26 of the instance's 31 GiB).
+
 ## Verify after the above
 
 ```sh

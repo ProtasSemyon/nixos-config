@@ -18,6 +18,7 @@
     ./programs.nix
     ./secrets.nix
     ./services.nix
+    ./syncthing.nix
     ./users.nix
     ./desktop.nix
     ./display-refresh.nix
