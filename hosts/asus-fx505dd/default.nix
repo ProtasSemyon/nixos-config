@@ -88,10 +88,9 @@
       ac = 60;
       battery = 60;
     };
-    # ASUS firmware names the mains adapter ADP0 rather than the ACAD that the
-    # Lenovo uses. Confirm with `ls /sys/class/power_supply`; if it is wrong the
-    # script just assumes AC and always picks the higher rate.
-    acDevice = "ADP0";
+    # ASUS firmware names the mains adapter AC0 rather than the ACAD that the
+    # Lenovo uses (confirmed via `ls /sys/class/power_supply`).
+    acDevice = "AC0";
   };
 
   # ---------------------------------------------------------------------------
@@ -140,9 +139,8 @@
     package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     modesetting.enable = true;
 
-    # VERIFY ON THE MACHINE before the first switch: `lspci -D | grep -E 'VGA|3D'`
-    # and convert, e.g. 0000:01:00.0 -> "PCI:1:0:0". These are the values this
-    # model usually reports, but a wrong ID breaks the session.
+    # Confirmed on this machine via `lspci -Dnn | grep '\[03'`: the Vega 8
+    # iGPU is 0000:05:00.0 and the GTX 1050 is 0000:01:00.0.
     prime = {
       amdgpuBusId = "PCI:5:0:0";
       nvidiaBusId = "PCI:1:0:0";
