@@ -6,7 +6,7 @@ let
   # here simply does not take part yet, which is harmless.
   devices = {
     saymoon = "2AQBXNJ-BYVTVOJ-IYLIFIH-N2KW3A3-FA55B5S-ZQJAHRB-QLKWXU5-J2YD7AH";
-    # fx505dd = "";
+    fx505dd = "XIVYMEK-IZQZMJR-2XFTQ4Z-AU6AAJP-V3T2DG3-OJCARUC-6Q5ORTH-IXPZSAG";
   };
 in
 {
