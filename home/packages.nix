@@ -28,7 +28,6 @@
     grok-cli
 
     zed-editor
-    jetbrains-toolbox
 
     obsidian
   ];

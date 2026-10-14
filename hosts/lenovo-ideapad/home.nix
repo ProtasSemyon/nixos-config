@@ -84,4 +84,9 @@ in
 
   # Mesa VA-API driver for the Radeon 680M iGPU.
   home.sessionVariables.LIBVA_DRIVER_NAME = "radeonsi";
+
+  # Not in home/packages.nix because it is fetched straight from the JetBrains
+  # CDN rather than a binary cache, which makes it a slow, flaky dependency to
+  # drag onto a machine that has no use for it.
+  home.packages = [ pkgs.jetbrains-toolbox ];
 }
