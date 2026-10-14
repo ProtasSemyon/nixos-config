@@ -1,11 +1,11 @@
 { lib, username, ... }:
 
 let
-  # Device IDs, printed by `syncthing --device-id` on each machine once the
-  # service has run. They are public, not secret. While this is empty the
-  # folder is configured but shared with nobody, which is harmless.
+  # Device IDs, printed by `syncthing device-id` on each machine once the
+  # service has run. They are public, not secret. A host that is not listed
+  # here simply does not take part yet, which is harmless.
   devices = {
-    # saymoon = "";
+    saymoon = "2AQBXNJ-BYVTVOJ-IYLIFIH-N2KW3A3-FA55B5S-ZQJAHRB-QLKWXU5-J2YD7AH";
     # fx505dd = "";
   };
 in

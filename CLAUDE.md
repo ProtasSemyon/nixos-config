@@ -181,8 +181,11 @@ is configured and shared with nobody. Fill it in once both machines have run the
 service at least once:
 
 ```sh
-syncthing --device-id     # run on each machine
+syncthing device-id       # run on each machine
 ```
+
+`saymoon` is already filled in. Note the subcommand form: syncthing 2.x dropped
+the `--device-id` flag the older guides use.
 
 The IDs are public; commit them. Both hosts need both entries — each machine
 identifies itself by its own certificate. After that the folder pairs up on its
