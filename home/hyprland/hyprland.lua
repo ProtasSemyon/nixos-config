@@ -3,13 +3,6 @@ local terminal = "foot"
 local fileManager = "thunar"
 local menu = "rofi -show drun -show-icons"
 
-hl.monitor({
-  output   = "eDP-1",
-  mode     = "2880x1800@120",
-  position = "auto",
-  scale    = "auto",
-})
-
 hl.config({
   general = {
     gaps_in          = 5,
@@ -96,6 +89,7 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("loginctl lock-session"))
+hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("screen-reset"))         -- DPMS off/on cycle on the primary monitor
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t -sw"))         -- toggle notification center
 hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -d -sw")) -- toggle do-not-disturb
 

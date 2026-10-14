@@ -17,8 +17,6 @@
     ];
   };
 
-  services.xserver.videoDrivers = [ "amdgpu" ];
-
   xdg.portal.enable = true;
 
   # Let hyprlock authenticate via PAM (required to unlock the screen).

@@ -43,10 +43,6 @@
     ];
 
     http-connections = 128;
-
-    # Cap parallel builds: with only 16 GiB RAM, "auto" (= 16 jobs) can OOM or
-    # thrash swap during heavy rebuilds. 4 jobs is a safe ceiling given zram.
-    max-jobs = 4;
   };
 
   # Garbage collection is handled by nh (programs.nh.clean), so the built-in

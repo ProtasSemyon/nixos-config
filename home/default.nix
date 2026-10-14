@@ -28,7 +28,6 @@
     MOZ_ENABLE_WAYLAND = "1";
     MOZ_X11_EGL = "1";
     MOZ_DISABLE_RDD_SANDBOX = "1";
-    LIBVA_DRIVER_NAME = "radeonsi";
   };
 
   # Thunar/xfce: use foot as the default terminal emulator.

@@ -26,8 +26,5 @@
   boot.kernelParams = [
     "quiet"
     "udev.log_level=0"
-    "amdgpu.dcdebugmask=0x10"
-    "amdgpu.sg_display=0"
-    "amdgpu.abmlevel=0"
   ];
 }

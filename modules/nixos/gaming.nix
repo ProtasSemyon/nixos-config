@@ -59,15 +59,9 @@ in
         inhibit_screensaver = 1;
       };
 
-      # The 680M shares one power budget with the CPU. Pinning the DPM level to
-      # "high" for the duration of a game removes the clock ramp-up latency
-      # that causes stutter on short GPU bursts. If a CPU-bound title regresses
-      # (the GPU then eats package TDP it does not need), set this to "auto".
-      gpu = {
-        apply_gpu_optimisations = "accept-responsibility";
-        gpu_device = 1; # /sys/class/drm/card1 — the Radeon 680M
-        amd_performance_level = "high";
-      };
+      # The per-GPU section (`gpu.gpu_device`, `amd_performance_level`) is
+      # set per host: the card index and whether pinning the DPM level helps
+      # both depend on the machine.
 
       custom = {
         start = "${pkgs.libnotify}/bin/notify-send -a GameMode 'GameMode activated'";

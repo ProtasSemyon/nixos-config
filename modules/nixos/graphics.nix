@@ -17,9 +17,5 @@
     ];
   };
 
-  # Load amdgpu in stage 1 instead of waiting for stage 2: the panel comes up at
-  # its native mode straight away and Plymouth stops flipping modes mid-boot.
-  hardware.amdgpu.initrd.enable = true;
-
   hardware.enableRedistributableFirmware = true;
 }

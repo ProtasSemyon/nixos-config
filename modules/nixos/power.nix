@@ -1,11 +1,6 @@
 { pkgs, ... }:
 
 {
-  # AMD Ryzen 7 7735HS (Rembrandt-R) — amd-pstate in active (EPP) mode.
-  boot.kernelParams = [
-    "amd_pstate=active"
-  ];
-
   # powertop --auto-tune fights TLP and breaks USB devices; keep it off.
   powerManagement.powertop.enable = false;
 
@@ -13,8 +8,9 @@
     enable = true;
     settings = {
       # --- CPU frequency scaling -------------------------------------------
-      # With amd-pstate-epp the "performance" governor pins EPP to
-      # "performance" and ignores CPU_ENERGY_PERF_POLICY_*. The modern,
+      # With an EPP-capable pstate driver (amd-pstate-epp, intel_pstate) the
+      # "performance" governor pins EPP to "performance" and ignores
+      # CPU_ENERGY_PERF_POLICY_*. The modern,
       # recommended setup is the "powersave" governor on BOTH AC and battery
       # (it still boosts to max) and to steer behaviour via EPP instead.
       CPU_SCALING_GOVERNOR_ON_AC = "powersave";
@@ -34,14 +30,6 @@
       # return.
       CPU_BOOST_ON_AC = 1;
       CPU_BOOST_ON_BAT = 0;
-
-      # ACPI platform profile (driven by the ideapad_laptop driver). This lets
-      # the EC manage power limits and fan curves alongside amd-pstate.
-      # Choices on this laptop: low-power | balanced | performance.
-      # Use "low-power" on battery for maximum endurance if you don't mind
-      # reduced sustained performance.
-      PLATFORM_PROFILE_ON_AC = "performance";
-      PLATFORM_PROFILE_ON_BAT = "balanced";
 
       # --- Devices ---------------------------------------------------------
       # Runtime power management for PCIe devices (iGPU, NVMe, controllers).
@@ -65,10 +53,8 @@
       # Small extra saving: disable the NMI watchdog.
       NMI_WATCHDOG = 0;
 
-      # Battery charge threshold for IdeaPad (Conservation Mode via the
-      # ideapad_laptop driver). 1 = stop charging at ~60% to extend battery
-      # lifespan; set to 0 if you need full capacity for travel.
-      STOP_CHARGE_THRESH_BAT0 = 1;
+      # Charge thresholds are vendor-specific (name, units and whether they
+      # are supported at all), so each host sets its own.
     };
   };
 
