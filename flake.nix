@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # claude-code releases several times a week, far more often than the rest
+    # of the system is worth rebuilding. Its own nixpkgs input lets
+    # `nix flake update nixpkgs-claude` bump the CLI and nothing else.
+    nixpkgs-claude.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

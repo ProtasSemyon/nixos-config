@@ -1,5 +1,14 @@
 { pkgs, inputs, ... }:
 
+let
+  # claude-code comes from its own nixpkgs input (see flake.nix), so it can be
+  # updated on its own. `config` is inherited from the host so allowUnfree --
+  # which claude-code needs -- still applies.
+  claudePkgs = import inputs.nixpkgs-claude {
+    inherit (pkgs.stdenv.hostPlatform) system;
+    inherit (pkgs) config;
+  };
+in
 {
   # System-wide packages. To search, run: nix search wget
   environment.systemPackages = with pkgs; [
@@ -47,7 +56,7 @@
     inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
     google-chrome
 
-    claude-code
+    claudePkgs.claude-code
 
     netbird-ui
     grpcurl
