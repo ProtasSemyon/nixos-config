@@ -21,7 +21,6 @@
 
   boot.plymouth.enable = true;
   boot.plymouth.theme = "bgrt";
-  boot.initrd.verbose = false;
   boot.consoleLogLevel = 0;
   boot.kernelParams = [
     "quiet"
