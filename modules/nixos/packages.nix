@@ -42,7 +42,7 @@ in
 
     volantes-cursors
 
-    graalvmPackages.graalvm-oracle
+    graalvmPackages.graalvm-ce
 
     pinentry-gnome3
     toybox
