@@ -11,6 +11,7 @@
     ./foot.nix
     ./ssh.nix
     ./syncthing.nix
+    ./netbird.nix
     ./kanshi.nix
     ./waybar.nix
     ./hyprland
