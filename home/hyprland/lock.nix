@@ -1,5 +1,9 @@
 { pkgs, ... }:
 let
+  # hyprctl dispatch takes a Lua expression since the Lua config; the old
+  # `dispatch dpms off` form is a syntax error now.
+  dpms = action: "hyprctl dispatch 'hl.dsp.dpms({ action = \"${action}\" })'";
+
   # Suspend only when running on battery; never auto-suspend on AC power.
   suspendIfOnBattery = pkgs.writeShellScript "suspend-if-on-battery" ''
     if [ "$(cat /sys/class/power_supply/ACAD/online 2>/dev/null)" != "1" ]; then
@@ -67,7 +71,7 @@ in
       general = {
         lock_cmd = "pidof hyprlock || hyprlock";
         before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "hyprctl dispatch dpms on";
+        after_sleep_cmd = dpms "on";
       };
 
       listener = [
@@ -77,8 +81,8 @@ in
         }
         {
           timeout = 360; # 6 min → screen off
-          on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
+          on-timeout = dpms "off";
+          on-resume = dpms "on";
         }
         {
           timeout = 900; # 15 min → suspend (battery only)

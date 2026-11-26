@@ -9,6 +9,7 @@
     discord
     logseq
     vlc
+    sioyek
 
     (yandex-music.override {
       trayEnabled = true; # Whether to enable tray support
@@ -30,5 +31,6 @@
     zed-editor
 
     obsidian
+    libsecret # secret-tool: read KeePassXC entries over Secret Service (Insomnia plugin)
   ];
 }

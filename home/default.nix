@@ -8,10 +8,12 @@
     ./fish.nix
     ./git.nix
     ./rust.nix
+    ./claude.nix
     ./foot.nix
     ./ssh.nix
     ./syncthing.nix
     ./netbird.nix
+    ./alarm.nix
     ./kanshi.nix
     ./waybar.nix
     ./hyprland

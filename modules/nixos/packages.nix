@@ -57,8 +57,20 @@ in
     google-chrome
 
     claudePkgs.claude-code
+    antigravity-cli
 
     netbird-ui
     grpcurl
+
+    postgresql # client tools only (psql, pg_dump); no server is enabled
+    awscli2
+    kubectl
+    kubernetes-helm
+    glab
+
+    codex
+
+    # System-wide (not home-manager) so polkit sees its policy and Quick Unlock works
+    keepassxc
   ];
 }

@@ -93,10 +93,7 @@ hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("screen-reset"))         -- D
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t -sw"))         -- toggle notification center
 hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -d -sw")) -- toggle do-not-disturb
 
-hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
+-- SUPER + arrows (focus) and SUPER + F (focus zoom) are bound in zoom.lua.
 
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
@@ -180,6 +177,24 @@ hl.window_rule({
   name    = "foot-opacity",
   match   = { class = "^(foot)$" },
   opacity = 0.93,
+})
+
+-- KeePassXC unlock prompt (shown when an app asks for a secret over Secret Service)
+hl.window_rule({
+  name   = "keepassxc-unlock-float",
+  match  = { class = [[^(org\.keepassxc\.KeePassXC)$]], title = [[^(Unlock Database\s*-\s*KeePassXC)$]] },
+  float  = true,
+  size   = "560 380",
+  center = true,
+})
+
+-- KeePassXC "Access Request": an app asks to read a secret
+hl.window_rule({
+  name   = "keepassxc-access-float",
+  match  = { class = [[^(org\.keepassxc\.KeePassXC)$]], title = [[^(KeePassXC\s*-\s*Access Request)$]] },
+  float  = true,
+  size   = "760 460",
+  center = true,
 })
 
 hl.window_rule({

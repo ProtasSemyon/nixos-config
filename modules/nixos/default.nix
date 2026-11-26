@@ -25,6 +25,7 @@
     ./packages.nix
     ./pipewire.nix
     ./power.nix
+    ./alarm.nix
     ./zram.nix
     ./gaming.nix
     ./thunar.nix

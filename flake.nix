@@ -35,6 +35,13 @@
 
     hyprland-guiutils.url = "github:hyprwm/hyprland-guiutils";
 
+    # Claude Code skills. Plain source trees, linked into ~/.claude/skills by
+    # home/claude.nix; `nix flake update humanizer` pulls a new version.
+    humanizer = {
+      url = "github:blader/humanizer";
+      flake = false;
+    };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";

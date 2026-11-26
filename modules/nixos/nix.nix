@@ -27,14 +27,14 @@
     substituters = [
       "https://nix-community.cachix.org" # Community packages
       "https://hyprland.cachix.org"
-      "https://nixos-cache-proxy.elxreno.com"
+      "https://cache.nixos.elxreno.com"
     ];
 
     trusted-substituters = [
       "https://cache.nixos.org" # Official global cache
       "https://nix-community.cachix.org" # Community packages
       "https://hyprland.cachix.org"
-      "https://nixos-cache-proxy.elxreno.com"
+      "https://cache.nixos.elxreno.com"
     ];
 
     trusted-public-keys = [

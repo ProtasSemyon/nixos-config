@@ -12,11 +12,17 @@ let
     set -u
     mon=''${1:-${defaultMonitor}}
 
-    on() { ${pkgs.hyprland}/bin/hyprctl dispatch "hl.dsp.dpms(\"on\", \"$mon\")" >/dev/null; }
+    # The Lua dispatcher takes a table; a bare string argument is ignored and
+    # silently means "toggle". No monitor field means every monitor.
+    dpms() {
+      local sel=""
+      [ -n "$mon" ] && sel=", monitor = \"$mon\""
+      ${pkgs.hyprland}/bin/hyprctl dispatch "hl.dsp.dpms({ action = \"$1\"$sel })" >/dev/null
+    }
     # Never leave the panel dark if we get killed mid-cycle.
-    trap on EXIT INT TERM
+    trap 'dpms on' EXIT INT TERM
 
-    ${pkgs.hyprland}/bin/hyprctl dispatch "hl.dsp.dpms(\"off\", \"$mon\")" >/dev/null
+    dpms off
     sleep 2
   '';
 
@@ -167,7 +173,14 @@ in
     # still concatenates with the Home Manager module's generated footer — which
     # starts hyprland-session.target and propagates the session environment.
     # The per-host monitor declarations are generated above and prepended.
+    # zoom.lua is appended in the same chunk, so it sees hyprland.lua's locals.
     xdg.configFile."hypr/hyprland.lua".text =
-      monitorsLua + "\n" + builtins.readFile ./hyprland.lua + "\n" + autostartLua;
+      monitorsLua
+      + "\n"
+      + builtins.readFile ./hyprland.lua
+      + "\n"
+      + builtins.readFile ./zoom.lua
+      + "\n"
+      + autostartLua;
   };
 }

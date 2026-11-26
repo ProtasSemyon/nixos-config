@@ -88,6 +88,14 @@
     STOP_CHARGE_THRESH_BAT0 = 1;
   };
 
+  # Opening the lid wakes this unit from s2idle through the ACPI power button,
+  # and with the default HandlePowerKey=poweroff it shuts down right after
+  # resume. A short press is therefore ignored; hold the button to power off.
+  services.logind.settings.Login = {
+    HandlePowerKey = "ignore";
+    HandlePowerKeyLongPress = "poweroff";
+  };
+
   # ---------------------------------------------------------------------------
   # Gaming
   # ---------------------------------------------------------------------------
