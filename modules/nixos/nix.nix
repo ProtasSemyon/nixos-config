@@ -1,14 +1,7 @@
 { inputs, ... }:
 
 {
-  nixpkgs.config = {
-    allowUnfree = true;
-    permittedInsecurePackages = [
-      # Required by logseq, which is pinned to an EOL Electron upstream.
-      # Drop this (and logseq from home/packages.nix) to close the CVE exposure.
-      "electron-39.8.10"
-    ];
-  };
+  nixpkgs.config.allowUnfree = true;
 
   # Pin the system's <nixpkgs> / flake registry to the flake input.
   nix.registry.nixpkgs.flake = inputs.nixpkgs;

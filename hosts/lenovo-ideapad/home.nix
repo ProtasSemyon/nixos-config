@@ -88,9 +88,4 @@ in
   # Slack on its own workspace: launching it unqualified drops it onto whatever
   # is focused, which is workspace 1 next to zen.
   hyprland.autostart = [ "[workspace 2 silent] slack" ];
-
-  # Not in home/packages.nix because it is fetched straight from the JetBrains
-  # CDN rather than a binary cache, which makes it a slow, flaky dependency to
-  # drag onto a machine that has no use for it.
-  home.packages = [ pkgs.jetbrains-toolbox ];
 }

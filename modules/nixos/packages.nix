@@ -19,10 +19,7 @@ in
     vim
     wget
     btop
-    mesa
     vulkan-tools
-    pipewire
-    wireplumber
     pamixer
     pulseaudio # даёт pactl для просмотра bluez-профилей
 
@@ -41,8 +38,6 @@ in
     docker-compose
 
     volantes-cursors
-
-    graalvmPackages.graalvm-ce
 
     pinentry-gnome3
     toybox

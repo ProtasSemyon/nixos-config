@@ -4,17 +4,12 @@
   home.packages = with pkgs; [
     libreoffice
     fastfetch
-    neohtop
     telegram-desktop
     discord
-    logseq
     vlc
     sioyek
 
-    (yandex-music.override {
-      trayEnabled = true; # Whether to enable tray support
-      electronArguments = ""; # Extra arguments to electron executable
-    })
+    yandex-music # tray support is built in since the package was rewritten
 
     prismlauncher
     xclicker
@@ -25,8 +20,6 @@
 
     insomnia
     postman
-
-    grok-cli
 
     zed-editor
 

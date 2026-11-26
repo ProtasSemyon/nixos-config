@@ -9,6 +9,11 @@
     # `nix flake update nixpkgs-claude` bump the CLI and nothing else.
     nixpkgs-claude.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Fonts get a new store path on every stdenv change although their files
+    # never do, and the nerd-fonts set alone is ~10 GiB to re-download. Pinned
+    # by rev so `nix flake update` leaves it alone; edit the rev to bump.
+    nixpkgs-fonts.url = "github:NixOS/nixpkgs/1d060086d60cb76a40cf37109f979d88a5bd6396";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
