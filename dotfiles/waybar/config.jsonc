@@ -181,8 +181,8 @@
   "network": {
     "interval": 3,
     "format-wifi": "  {bandwidthTotalBytes}",
-    "format-ethernet": "{ipaddr}/{cidr} ",
-    "tooltip-format": "{ifname} via {gwaddr} ",
+    "format-ethernet": "{bandwidthTotalBytes} ",
+    "tooltip-format": "{ifname}: {ipaddr}/{cidr} via {gwaddr} ",
     "format-linked": "{ifname} (No IP)",
     "format-disconnected": " Offline",
     "format-alt": "{ifname}: {ipaddr}/{cidr}",
