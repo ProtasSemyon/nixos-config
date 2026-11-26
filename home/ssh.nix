@@ -10,6 +10,11 @@
         user = "saymoon";
         identityFile = "~/.ssh/home-laptop";
       };
+      # The two laptops, by the hostnames the router hands out.
+      "saymoon fx505dd" = {
+        identityFile = "~/.ssh/home-laptop";
+        identitiesOnly = true;
+      };
       # Личный аккаунт ProtasSemyon — дефолт для git@github.com:...
       "github.com" = {
         hostname = "github.com";
