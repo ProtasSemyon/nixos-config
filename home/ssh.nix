@@ -8,7 +8,9 @@
       # Over Tailscale (MagicDNS), so it works from anywhere, not only from the
       # office LAN where the address is a DHCP lease. Host key is pinned in
       # modules/nixos/services.nix.
-      "office" = {
+      # The full name too: the build-cache push (modules/nixos/build-cache.nix)
+      # connects to it, not to the alias.
+      "office office.tail883758.ts.net" = {
         hostname = "office.tail883758.ts.net";
         user = "smn";
         identityFile = "~/.ssh/home-laptop";
