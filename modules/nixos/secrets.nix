@@ -9,6 +9,12 @@ in
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
+  # On a fresh install ~/.ssh does not exist yet when the secrets below are
+  # first linked, so sops-nix creates it as root:root. Home Manager then cannot
+  # write ~/.ssh/config, and its whole activation fails. tmpfiles runs before
+  # home-manager-<user>.service and fixes the owner of an existing directory.
+  systemd.tmpfiles.rules = [ "d ${home}/.ssh 0700 ${username} users -" ];
+
   # Materialize the user's SSH private keys straight into ~/.ssh (owner smn,
   # mode 0600). Editing secrets: `sops secrets/secrets.yaml` (uses the personal
   # age key at ~/.config/sops/age/keys.txt).
