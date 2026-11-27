@@ -18,11 +18,47 @@ in
   # projects and git worktrees — flake-based or not. Lives in the shared
   # ~/.cargo home, so it applies globally.
   # incremental is disabled because sccache does not cache incremental builds.
+  #
+  # Debug info is most of a dev build's target/. Own code keeps line tables
+  # (file:line in backtraces and panics), dependencies get none: stepping
+  # into a dependency in a debugger shows no locals, own code is unaffected.
+  # A project's own [profile.dev] in Cargo.toml takes precedence.
   home.file.".cargo/config.toml".text = ''
     [build]
     rustc-wrapper = "sccache"
     incremental = false
+
+    [profile.dev]
+    debug = "line-tables-only"
+
+    [profile.dev.package."*"]
+    debug = false
   '';
+
+  # target/ never shrinks by itself: old crate versions, dropped features and
+  # past toolchains pile up. Weekly, drop artifacts older than two weeks
+  # across ~/projects. The filesystem is mounted noatime, so "older" means
+  # built longer ago, not unused for longer; anything still needed is rebuilt,
+  # mostly from sccache.
+  systemd.user.services.cargo-sweep = {
+    Unit.Description = "Remove stale cargo build artifacts under ~/projects";
+    Service = {
+      Type = "oneshot";
+      Environment = "PATH=${pkgs.rustup}/bin";
+      ExecStart = "${pkgs.cargo-sweep}/bin/cargo-sweep sweep --recursive --time 14 %h/projects";
+      Nice = 19;
+      IOSchedulingClass = "idle";
+    };
+  };
+
+  systemd.user.timers.cargo-sweep = {
+    Unit.Description = "Weekly cargo-sweep of ~/projects";
+    Timer = {
+      OnCalendar = "weekly";
+      Persistent = true;
+    };
+    Install.WantedBy = [ "timers.target" ];
+  };
 
   # Two levels: a bounded local disk cache answers first, the WebDAV share on
   # the cache host (modules/nixos/build-cache.nix) is shared by every machine.
