@@ -45,6 +45,14 @@
     AllowSuspendThenHibernate = "no";
   };
 
+  # Hosts the shared Nix binary cache and the sccache share
+  # (modules/nixos/build-cache.nix). Compiler objects are bulky and cheap to
+  # lose, so they go on the HDD; the Nix store has to stay on the SSD.
+  buildCache.server = {
+    enable = true;
+    sccacheDir = "/data/sccache";
+  };
+
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;

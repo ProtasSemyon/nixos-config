@@ -27,6 +27,7 @@
     ./power.nix
     ./alarm.nix
     ./zram.nix
+    ./build-cache.nix
     ./gaming.nix
     ./thunar.nix
     ./obs.nix

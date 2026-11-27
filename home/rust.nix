@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ osConfig, pkgs, ... }:
 
+let
+  cache = osConfig.buildCache;
+in
 {
   # rustup provides the cargo/rustc/rustup proxies on PATH for every login and
   # graphical session (home-manager is a NixOS module, so this lands in
@@ -21,10 +24,17 @@
     incremental = false
   '';
 
-  # Bound the shared sccache cache (default dir ~/.cache/sccache) so it can't
-  # grow without limit — LRU eviction keeps it at ~20 GiB.
+  # Two levels: a bounded local disk cache answers first, the WebDAV share on
+  # the cache host (modules/nixos/build-cache.nix) is shared by every machine.
+  # A local miss that hits the share is copied back to disk.
   home.file.".config/sccache/config".text = ''
     [cache.disk]
-    size = 21474836480
+    size = 10737418240
+
+    [cache.webdav]
+    endpoint = "http://${cache.host}:${toString cache.sccachePort}"
+
+    [cache.multilevel]
+    chain = ["disk", "webdav"]
   '';
 }
