@@ -138,7 +138,7 @@ in
         serviceConfig.Type = "oneshot";
         script = ''
           system=$(readlink -f /run/current-system)
-          nix copy -s --to "ssh-ng://${username}@${host}" "$system"
+          nix copy -s --no-check-sigs --to "ssh-ng://${username}@${host}" "$system"
           # shellcheck disable=SC2086
           ssh $NIX_SSHOPTS "${username}@${host}" "build-cache-root ${config.networking.hostName} $system"
         '';
