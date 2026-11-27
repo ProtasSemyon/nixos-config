@@ -4,9 +4,29 @@ let
   # Device IDs, printed by `syncthing device-id` on each machine once the
   # service has run. They are public, not secret. A host that is not listed
   # here simply does not take part yet, which is harmless.
+  #
+  # `addresses` lists where to dial a device besides "dynamic" (local and
+  # global discovery, then relays). office is always on and always on the
+  # tailnet, so it is tried there first; without Tailscale, discovery still
+  # finds it.
   devices = {
-    saymoon = "2AQBXNJ-BYVTVOJ-IYLIFIH-N2KW3A3-FA55B5S-ZQJAHRB-QLKWXU5-J2YD7AH";
-    fx505dd = "XIVYMEK-IZQZMJR-2XFTQ4Z-AU6AAJP-V3T2DG3-OJCARUC-6Q5ORTH-IXPZSAG";
+    saymoon.id = "2AQBXNJ-BYVTVOJ-IYLIFIH-N2KW3A3-FA55B5S-ZQJAHRB-QLKWXU5-J2YD7AH";
+    fx505dd.id = "XIVYMEK-IZQZMJR-2XFTQ4Z-AU6AAJP-V3T2DG3-OJCARUC-6Q5ORTH-IXPZSAG";
+    office = {
+      id = "KZWR54K-C5L3WQ3-SDRUVEE-HCR3KR2-HZKJFGO-JPWWPXS-VC7UEEC-KNJJCQB";
+      addresses = [
+        "tcp://office.tail883758.ts.net:22000"
+        "quic://office.tail883758.ts.net:22000"
+        "dynamic"
+      ];
+    };
+  };
+
+  # Keep superseded versions under .stversions for `days`, thinning them out
+  # as they age.
+  staggered = days: {
+    type = "staggered";
+    params.maxAge = toString (days * 24 * 60 * 60);
   };
 in
 {
@@ -36,19 +56,37 @@ in
     overrideFolders = true;
 
     settings = {
-      devices = lib.mapAttrs (_: id: { inherit id; }) devices;
+      inherit devices;
 
       folders."divine-journey-2" = {
         label = "Divine Journey 2";
         path = "/home/${username}/.local/share/PrismLauncher/instances/Divine Journey 2";
+        # Only the machines the game is played on; office would just carry
+        # 5 GiB it never uses.
+        devices = [
+          "saymoon"
+          "fx505dd"
+        ];
+
+        # A world clobbered by a bad sync is recoverable for a month.
+        versioning = staggered 30;
+      };
+
+      # The KeePassXC databases. office is the always-on peer, so an edit made
+      # on one laptop reaches the other even when the two are never up at the
+      # same time.
+      #
+      # The files are encrypted by KeePassXC; Syncthing only carries them. If
+      # a database is edited on two machines while they cannot see each other,
+      # Syncthing keeps both as `*.sync-conflict-*.kdbx` -- fold the extra one
+      # back in with KeePassXC's Database > Merge from database.
+      folders.passwords = {
+        label = "Passwords";
+        path = "/home/${username}/Passwords";
         devices = lib.attrNames devices;
 
-        # Keep superseded versions for a month under .stversions, thinning them
-        # out as they age. A world clobbered by a bad sync is recoverable.
-        versioning = {
-          type = "staggered";
-          params.maxAge = toString (30 * 24 * 60 * 60);
-        };
+        # A database lost or overwritten is recoverable for a year.
+        versioning = staggered 365;
       };
     };
   };

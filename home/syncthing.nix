@@ -8,10 +8,18 @@
 let
   # Derived from the NixOS module so the path cannot drift between the two.
   # home.file keys are relative to $HOME.
-  instancePath = osConfig.services.syncthing.settings.folders."divine-journey-2".path;
-  folder = lib.removePrefix "/home/${username}/" instancePath;
+  relative =
+    name:
+    lib.removePrefix "/home/${username}/" osConfig.services.syncthing.settings.folders.${name}.path;
+  folder = relative "divine-journey-2";
 in
 {
+  # Nothing to exclude yet; the file exists so that Home Manager creates
+  # ~/Passwords before Syncthing looks for it on a fresh machine.
+  home.file."${relative "passwords"}/.stignore".text = ''
+    // KeePassXC databases (*.kdbx) and their key files are synced as-is.
+  '';
+
   # Patterns Syncthing applies to the instance. Writing this through Home
   # Manager also guarantees the directory exists, which Syncthing needs before
   # it will take the folder on a fresh machine.
