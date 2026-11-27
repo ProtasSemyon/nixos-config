@@ -48,7 +48,6 @@ in
     clang
     sshfs
 
-    inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default
     google-chrome
 
     claudePkgs.claude-code

@@ -11,6 +11,7 @@
     ./claude.nix
     ./foot.nix
     ./ssh.nix
+    ./zen.nix
     ./syncthing.nix
     ./netbird.nix
     ./socks-proxy.nix

@@ -111,7 +111,7 @@ in
       "waybar"
       "nm-applet --indicator"
       "blueman-applet"
-      "[workspace 1 silent] zen"
+      "[workspace 1 silent] zen-beta"
       "[workspace special:magic silent] Telegram"
     ];
 
