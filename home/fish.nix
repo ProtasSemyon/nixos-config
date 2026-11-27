@@ -8,10 +8,11 @@
     '';
     shellAliases = {
       # nh reads the flake from programs.nh.flake; it elevates privileges itself.
-      nrs = "nh os switch";
-      # Update flake inputs and switch, then move the project devshells to the
-      # new nixpkgs (home/dev-envs.nix).
-      nrsu = "nh os switch --update; and dev-envs-sync";
+      # Pull first: the lock nrsu pushed from another machine is what gets
+      # built, and the build cache on office already has its results.
+      nrs = "git -C ~/nixos-config pull --ff-only --quiet; and nh os switch";
+      # nrsu is a script now (home/nrsu.nix): update, switch, commit and push
+      # flake.lock, sync the project devshells.
     };
   };
 }

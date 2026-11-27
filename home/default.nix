@@ -10,6 +10,7 @@
     ./rust.nix
     ./cpp.nix
     ./dev-envs.nix
+    ./nrsu.nix
     ./claude.nix
     ./foot.nix
     ./ssh.nix

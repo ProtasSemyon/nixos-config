@@ -9,7 +9,7 @@
 # indirect `nixpkgs.url = "nixpkgs"` does not work for this: inputs resolve
 # through the global registry, not the system one nixos-config pins.)
 #
-# `nrsu` runs this after updating the system; nix-direnv notices the changed
+# `nrsu` (home/nrsu.nix) runs this after updating the system; nix-direnv notices the changed
 # lock and reloads the shell on the next cd. Missing directories are skipped,
 # so machines without these projects are unaffected.
 let
