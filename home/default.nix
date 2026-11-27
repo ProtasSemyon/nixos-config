@@ -8,6 +8,7 @@
     ./fish.nix
     ./git.nix
     ./rust.nix
+    ./cpp.nix
     ./claude.nix
     ./foot.nix
     ./ssh.nix
