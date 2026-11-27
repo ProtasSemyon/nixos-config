@@ -1,4 +1,4 @@
-{ osConfig, ... }:
+{ lib, osConfig, ... }:
 
 # C/C++ builds share the caches on the cache host (modules/nixos/build-cache.nix),
 # the same way Rust does in home/rust.nix.
@@ -11,9 +11,8 @@
 let
   cache = osConfig.buildCache;
   webdav = "http://${cache.host}:${toString cache.sccachePort}";
-in
-{
-  home.sessionVariables = {
+
+  vars = {
     # Read by CMake when a build directory is configured for the first time;
     # an existing build/ keeps whatever its CMakeCache.txt already has.
     # sccache's config (two-level: local disk, then the share) is in
@@ -28,4 +27,16 @@ in
     # With the host unreachable vcpkg warns and builds the port itself.
     VCPKG_BINARY_SOURCES = "clear;default,readwrite;http,${webdav}/vcpkg-{name}-{sha}.zip,readwrite";
   };
+in
+{
+  home.sessionVariables = vars;
+
+  # home.sessionVariables are sourced once per login session (guarded by
+  # __HM_SESS_VARS_SOURCED, inherited from the graphical session), so a value
+  # added by a switch stays invisible in new terminals until the next login.
+  # A build that silently runs without them just rebuilds everything, so fish
+  # sets these on every start as well.
+  programs.fish.shellInit = lib.concatStringsSep "\n" (
+    lib.mapAttrsToList (n: v: "set -gx ${n} ${lib.escapeShellArg v}") vars
+  );
 }
