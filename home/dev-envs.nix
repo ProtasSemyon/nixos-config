@@ -19,13 +19,13 @@
 # directories are skipped, so machines without these projects are unaffected;
 # one env failing to build does not stop the others.
 let
-  # cpp-env is left out for now: on the system's nixpkgs its clang wrapper
-  # already picks libc++, so the `-stdlib=libc++` in the projects' vcpkg
-  # triplet (x64-linux-libcxx) is reported unused, and ports built with
-  # -Werror (redis-plus-plus) fail. Add it back once those triplets carry
-  # -Wno-unused-command-line-argument.
+  # cpp-env sets NIX_CFLAGS_COMPILE=-Wno-unused-command-line-argument: its
+  # libcxxStdenv clang already selects libc++, so the projects' vcpkg triplet
+  # `-stdlib=libc++` is unused and -Werror ports (redis-plus-plus) failed on
+  # clang 21 without it.
   envs = [
     "projects/rust_projects/rust-env"
+    "projects/cpp_projects/cpp-env"
     "projects/js_projects/js-env"
     "projects/python/python-env"
   ];
