@@ -50,12 +50,15 @@ let
         fi
       fi
 
-      # Hand the new system to the build cache now rather than at the next
-      # hourly tick, so the other machines find it there when they pull this
-      # lock. The unit exists only on cache clients, not on the cache host.
-      systemctl --user start --no-block build-cache-push.service 2>/dev/null || true
+      # Re-lock and prebuild the project devshells; a failure there is
+      # reported but does not undo the update.
+      dev-envs-sync || echo "nrsu: some devshells failed to build (see above)." >&2
 
-      dev-envs-sync
+      # Hand the new system and the devshells to the build cache now rather
+      # than at the next hourly tick, so the other machines find them there
+      # when they pull this lock. The unit exists only on cache clients, not
+      # on the cache host.
+      systemctl --user start --no-block build-cache-push.service 2>/dev/null || true
     '';
   };
 in

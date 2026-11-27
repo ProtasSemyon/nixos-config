@@ -38,7 +38,7 @@ let
         # shellcheck disable=SC2086
         set -- $SSH_ORIGINAL_COMMAND
         name=$2 path=$3
-        case "$name" in "" | *[!A-Za-z0-9-]*) exit 1 ;; esac
+        case "$name" in "" | *[!A-Za-z0-9_-]*) exit 1 ;; esac
         case "$path" in /nix/store/*) ;; *) exit 1 ;; esac
         roots="$HOME/.local/state/build-cache-roots"
         ${pkgs.coreutils}/bin/mkdir -p "$roots"
@@ -120,15 +120,18 @@ in
         mode = "0400";
       };
 
-      # Push the running system to the cache host. `-s` lets the host fetch
-      # whatever the public caches have by itself, so only what was built
-      # here crosses the tailnet. The result is rooted on the host per machine,
-      # or its garbage collection would drop it again.
+      # Push the running system to the cache host, plus the project devshells
+      # dev-envs-sync (home/dev-envs.nix) keeps built under
+      # ~/.local/state/dev-envs. `-s` lets the host fetch whatever the public
+      # caches have by itself, so only what was built here crosses the
+      # tailnet. Each result is rooted on the host under its own name (the
+      # machine, or machine-env-shell), or its garbage collection would drop
+      # it again.
       #
       # `-F none` keeps the user's ssh config (and its passphrase-protected
       # identities) out of it; host keys still come from /etc/ssh.
       systemd.user.services.build-cache-push = {
-        description = "Push this machine's system closure to the build cache";
+        description = "Push this machine's system and devshells to the build cache";
         unitConfig.ConditionUser = username;
         path = [
           config.nix.package
@@ -137,10 +140,19 @@ in
         environment.NIX_SSHOPTS = "-F none -i ${config.sops.secrets.build-cache-push-key.path} -o IdentitiesOnly=yes -o BatchMode=yes";
         serviceConfig.Type = "oneshot";
         script = ''
-          system=$(readlink -f /run/current-system)
-          nix copy -s --no-check-sigs --to "ssh-ng://${username}@${host}" "$system"
-          # shellcheck disable=SC2086
-          ssh $NIX_SSHOPTS "${username}@${host}" "build-cache-root ${config.networking.hostName} $system"
+          push() {
+            nix copy -s --no-check-sigs --to "ssh-ng://${username}@${host}" "$2"
+            # shellcheck disable=SC2086
+            ssh $NIX_SSHOPTS "${username}@${host}" "build-cache-root $1 $2"
+          }
+
+          push ${config.networking.hostName} "$(readlink -f /run/current-system)"
+
+          for profile in "$HOME"/.local/state/dev-envs/*; do
+            case "$profile" in *-link) continue ;; esac
+            [ -e "$profile" ] || continue
+            push "${config.networking.hostName}-$(basename "$profile")" "$(readlink -f "$profile")"
+          done
         '';
       };
 
