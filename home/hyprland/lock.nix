@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   # hyprctl dispatch takes a Lua expression since the Lua config; the old
   # `dispatch dpms off` form is a syntax error now.
@@ -7,11 +12,13 @@ let
   # Suspend only when running on battery; never auto-suspend on AC power, and
   # never on a machine that has no battery at all (a desktop). The adapter's
   # name differs between vendors (ACAD, AC0, ...), so match on type instead.
+  # Batteries with scope=Device belong to peripherals (a Logitech mouse or
+  # keyboard shows up as hidpp_battery_*) and say nothing about the machine.
   suspendIfOnBattery = pkgs.writeShellScript "suspend-if-on-battery" ''
     battery=0
     for d in /sys/class/power_supply/*; do
       case "$(cat "$d/type" 2>/dev/null)" in
-        Battery) battery=1 ;;
+        Battery) [ "$(cat "$d/scope" 2>/dev/null)" = "Device" ] || battery=1 ;;
         Mains) [ "$(cat "$d/online" 2>/dev/null)" = "1" ] && exit 0 ;;
       esac
     done
@@ -20,8 +27,18 @@ let
   '';
 in
 {
+  options.hyprland.idleSuspend = lib.mkOption {
+    type = lib.types.bool;
+    default = true;
+    description = ''
+      Whether hypridle suspends the machine after 15 minutes idle (on battery
+      only). Hosts that must stay reachable set this to false; locking and
+      blanking the screen are unaffected.
+    '';
+  };
+
   # Screen locker (Hyprland ecosystem).
-  programs.hyprlock = {
+  config.programs.hyprlock = {
     enable = true;
     settings = {
       general = {
@@ -72,8 +89,8 @@ in
     };
   };
 
-  # Idle daemon: lock, blank the screen, then suspend.
-  services.hypridle = {
+  # Idle daemon: lock, blank the screen, then (where allowed) suspend.
+  config.services.hypridle = {
     enable = true;
     settings = {
       general = {
@@ -92,11 +109,11 @@ in
           on-timeout = dpms "off";
           on-resume = dpms "on";
         }
-        {
-          timeout = 900; # 15 min → suspend (battery only)
-          on-timeout = "${suspendIfOnBattery}";
-        }
-      ];
+      ]
+      ++ lib.optional config.hyprland.idleSuspend {
+        timeout = 900; # 15 min → suspend (battery only)
+        on-timeout = "${suspendIfOnBattery}";
+      };
     };
   };
 }

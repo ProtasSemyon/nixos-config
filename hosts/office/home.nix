@@ -32,6 +32,10 @@ in
     }
   ];
 
+  # Mostly a server: lock and blank the screen when idle, never suspend.
+  # (sleep.conf in ./default.nix forbids it system-wide as well.)
+  hyprland.idleSuspend = false;
+
   # UHD 630 (Coffee Lake): VA-API through intel-media-driver, which
   # nixos-hardware's common-gpu-intel installs.
   home.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
