@@ -22,6 +22,34 @@ let
   cfg = config.buildCache;
   isServer = cfg.server.enable;
   inherit (cfg) host;
+
+  # The push runs unattended, so it cannot use the passphrase-protected
+  # personal keys. It has its own key (private half in sops), which the cache
+  # host accepts for exactly two things: the Nix daemon protocol, and rooting
+  # one pushed path per machine. No shell, no forwarding.
+  pushPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHxmqaEPXO05W5sVWYZB1mTbYhBO4VASeEN2R8rM05ht build-cache-push";
+
+  pushGate = pkgs.writeShellScript "build-cache-push-gate" ''
+    case "$SSH_ORIGINAL_COMMAND" in
+      "nix-daemon --stdio")
+        exec ${config.nix.package}/bin/nix-daemon --stdio
+        ;;
+      "build-cache-root "*)
+        # shellcheck disable=SC2086
+        set -- $SSH_ORIGINAL_COMMAND
+        name=$2 path=$3
+        case "$name" in "" | *[!A-Za-z0-9-]*) exit 1 ;; esac
+        case "$path" in /nix/store/*) ;; *) exit 1 ;; esac
+        roots="$HOME/.local/state/build-cache-roots"
+        ${pkgs.coreutils}/bin/mkdir -p "$roots"
+        exec ${config.nix.package}/bin/nix-store --realise --add-root "$roots/$name" "$path" >/dev/null
+        ;;
+      *)
+        echo "build-cache-push key: command not allowed" >&2
+        exit 1
+        ;;
+    esac
+  '';
 in
 {
   options.buildCache = {
@@ -87,10 +115,18 @@ in
         fallback = true;
       };
 
+      sops.secrets.build-cache-push-key = {
+        owner = username;
+        mode = "0400";
+      };
+
       # Push the running system to the cache host. `-s` lets the host fetch
       # whatever the public caches have by itself, so only what was built
       # here crosses the tailnet. The result is rooted on the host per machine,
       # or its garbage collection would drop it again.
+      #
+      # `-F none` keeps the user's ssh config (and its passphrase-protected
+      # identities) out of it; host keys still come from /etc/ssh.
       systemd.user.services.build-cache-push = {
         description = "Push this machine's system closure to the build cache";
         unitConfig.ConditionUser = username;
@@ -98,11 +134,13 @@ in
           config.nix.package
           pkgs.openssh
         ];
+        environment.NIX_SSHOPTS = "-F none -i ${config.sops.secrets.build-cache-push-key.path} -o IdentitiesOnly=yes -o BatchMode=yes";
         serviceConfig.Type = "oneshot";
         script = ''
           system=$(readlink -f /run/current-system)
-          nix copy -s --to "ssh-ng://${host}" "$system"
-          ssh "${host}" "mkdir -p ~/.local/state/build-cache-roots && nix-store --realise --add-root ~/.local/state/build-cache-roots/${config.networking.hostName} $system" >/dev/null
+          nix copy -s --to "ssh-ng://${username}@${host}" "$system"
+          # shellcheck disable=SC2086
+          ssh $NIX_SSHOPTS "${username}@${host}" "build-cache-root ${config.networking.hostName} $system"
         '';
       };
 
@@ -120,6 +158,10 @@ in
     # --- the host ----------------------------------------------------------
     (lib.mkIf isServer {
       sops.secrets.harmonia-signing-key = { };
+
+      users.users.${username}.openssh.authorizedKeys.keys = [
+        ''restrict,command="${pushGate}" ${pushPublicKey}''
+      ];
 
       services.harmonia.cache = {
         enable = true;
