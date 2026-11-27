@@ -13,6 +13,7 @@
     ./ssh.nix
     ./syncthing.nix
     ./netbird.nix
+    ./socks-proxy.nix
     ./alarm.nix
     ./kanshi.nix
     ./waybar.nix
