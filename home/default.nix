@@ -9,6 +9,7 @@
     ./git.nix
     ./rust.nix
     ./cpp.nix
+    ./dev-envs.nix
     ./claude.nix
     ./foot.nix
     ./ssh.nix
