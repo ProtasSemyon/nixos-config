@@ -7,7 +7,7 @@
     settings = {
       "office" = {
         hostname = "192.168.5.2";
-        user = "saymoon";
+        user = "smn";
         identityFile = "~/.ssh/home-laptop";
       };
       # The two laptops, by the hostnames the router hands out.

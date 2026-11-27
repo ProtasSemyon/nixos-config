@@ -4,11 +4,19 @@ let
   # `dispatch dpms off` form is a syntax error now.
   dpms = action: "hyprctl dispatch 'hl.dsp.dpms({ action = \"${action}\" })'";
 
-  # Suspend only when running on battery; never auto-suspend on AC power.
+  # Suspend only when running on battery; never auto-suspend on AC power, and
+  # never on a machine that has no battery at all (a desktop). The adapter's
+  # name differs between vendors (ACAD, AC0, ...), so match on type instead.
   suspendIfOnBattery = pkgs.writeShellScript "suspend-if-on-battery" ''
-    if [ "$(cat /sys/class/power_supply/ACAD/online 2>/dev/null)" != "1" ]; then
-      ${pkgs.systemd}/bin/systemctl suspend
-    fi
+    battery=0
+    for d in /sys/class/power_supply/*; do
+      case "$(cat "$d/type" 2>/dev/null)" in
+        Battery) battery=1 ;;
+        Mains) [ "$(cat "$d/online" 2>/dev/null)" = "1" ] && exit 0 ;;
+      esac
+    done
+    [ "$battery" = "1" ] && exec ${pkgs.systemd}/bin/systemctl suspend
+    exit 0
   '';
 in
 {

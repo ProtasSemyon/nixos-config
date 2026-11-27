@@ -51,6 +51,13 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Declarative partitioning. Used by hosts installed with nixos-anywhere,
+    # where the disk layout has to exist as code before the machine is wiped.
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -127,6 +134,20 @@
           common-gpu-nvidia
           asus-battery
         ];
+      };
+
+      # Office desktop, mostly run as a server — i5-8400 (Coffee Lake, UHD
+      # 630), installed remotely over Fedora with nixos-anywhere.
+      nixosConfigurations.office = mkHost {
+        host = ./hosts/office;
+        modules = [
+          inputs.disko.nixosModules.disko
+        ]
+        ++ (with inputs.nixos-hardware.nixosModules; [
+          common-cpu-intel
+          common-pc
+          common-pc-ssd
+        ]);
       };
     };
 }
